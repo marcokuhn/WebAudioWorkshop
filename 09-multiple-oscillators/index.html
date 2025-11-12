@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Multiple Oscillators - Harmony & Chords - Web Audio Workshop</title>
     <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 </head>
 <body>
     <div class="container">
@@ -168,26 +169,73 @@
                 </ul>
             </div>
 
-            <div class="signal-flow">
-                <div class="signal-node">Oscillator 1 (Root)</div>
-                <div class="signal-arrow">→</div>
-                <div class="signal-node">Gain 1</div>
-                <div class="signal-arrow" style="writing-mode: vertical-lr;">↓</div>
-                <div class="signal-node">Oscillator 2 (Third)</div>
-                <div class="signal-arrow">→</div>
-                <div class="signal-node">Gain 2</div>
-                <div class="signal-arrow">→</div>
-                <div class="signal-node">Master Gain</div>
-                <div class="signal-arrow">→</div>
-                <div class="signal-node">Destination</div>
-                <div class="signal-arrow" style="writing-mode: vertical-lr;">↑</div>
-                <div class="signal-node">Oscillator 3 (Fifth)</div>
-                <div class="signal-arrow">→</div>
-                <div class="signal-node">Gain 3</div>
+            <div class="code-hint">
+                <h3>Basic Code Example:</h3>
+                <pre><code class="language-javascript">// Create three oscillators for a chord (C major: C-E-G)
+const osc1 = new Tone.Oscillator(261.63, 'sine');  // C (root)
+const osc2 = new Tone.Oscillator(329.63, 'sine');  // E (third)
+const osc3 = new Tone.Oscillator(392.00, 'sine');  // G (fifth)
+
+// Individual gain nodes for volume control
+const gain1 = new Tone.Gain(0.3);
+const gain2 = new Tone.Gain(0.3);
+const gain3 = new Tone.Gain(0.3);
+
+// Master gain for overall volume
+const masterGain = new Tone.Gain(0.5);
+
+// Connect: Each Oscillator → Individual Gain → Master Gain → Destination
+osc1.connect(gain1);
+osc2.connect(gain2);
+osc3.connect(gain3);
+
+gain1.connect(masterGain);
+gain2.connect(masterGain);
+gain3.connect(masterGain);
+masterGain.toDestination();
+
+// Start all oscillators
+osc1.start();
+osc2.start();
+osc3.start();</code></pre>
+            </div>
+
+            <div class="signal-flow" style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="signal-node">Oscillator 1 (Root)</div>
+                    <div class="signal-arrow">→</div>
+                    <div class="signal-node">Gain 1</div>
+                    <div class="signal-arrow">→</div>
+                    <div class="signal-node">Master Gain</div>
+                    <div class="signal-arrow">→</div>
+                    <div class="signal-node">Destination</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="signal-node">Oscillator 2 (Third)</div>
+                    <div class="signal-arrow">→</div>
+                    <div class="signal-node">Gain 2</div>
+                    <div class="signal-arrow">→</div>
+                    <div class="signal-node">Master Gain</div>
+                    <div class="signal-arrow">→</div>
+                    <div class="signal-node">Destination</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="signal-node">Oscillator 3 (Fifth)</div>
+                    <div class="signal-arrow">→</div>
+                    <div class="signal-node">Gain 3</div>
+                    <div class="signal-arrow">→</div>
+                    <div class="signal-node">Master Gain</div>
+                    <div class="signal-arrow">→</div>
+                    <div class="signal-node">Destination</div>
+                </div>
             </div>
         </footer>
     </div>
 
+    <!-- Prism.js for Syntax Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    
     <!-- Tone.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
     

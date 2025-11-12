@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sample Playback - Web Audio Workshop</title>
     <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         #progressBar {
             width: 100%;
@@ -70,6 +71,13 @@
                 <div class="status status-warning" id="statusMessage">
                     Click "Start Audio Engine" to enable sound
                 </div>
+                <div class="status status-info" style="margin-top: 10px;">
+                    <strong>⚠️ Important:</strong> The "Load Example Sample" button requires a local web server to work due to browser security (CORS).
+                    To run a simple server, open terminal in the project folder and run:<br>
+                    <code style="background: #fff; padding: 5px 10px; border-radius: 4px; display: inline-block; margin-top: 5px;">python -m http.server 8000</code><br>
+                    Then open <code>http://localhost:8000</code> in your browser.<br>
+                    <em>The "Upload Your Own Sample" button works without a server.</em>
+                </div>
             </div>
 
             <!-- Load Sample -->
@@ -78,22 +86,13 @@
                 
                 <div class="control-row">
                     <button class="btn btn-primary" id="loadSampleBtn">📁 Load Example Sample</button>
+                    <button class="btn btn-secondary" id="uploadBtn">📤 Upload Your Own Sample</button>
+                    <input type="file" id="fileInput" accept="audio/*" style="display: none;">
                 </div>
-
-                <div style="margin: 20px 0;">
-                    <strong>- OR -</strong>
+                
+                <div class="status status-info" style="margin-top: 10px;">
+                    <strong>Note:</strong> Supports WAV, MP3, OGG, and other common audio formats
                 </div>
-
-                <label for="fileInput" class="file-upload-area">
-                    <div style="font-size: 3em; margin-bottom: 10px;">📤</div>
-                    <div style="font-size: 1.2em; font-weight: 600; margin-bottom: 10px;">
-                        Click to Upload Your Own Audio File
-                    </div>
-                    <div style="color: #666;">
-                        Supports WAV, MP3, OGG, and other common audio formats
-                    </div>
-                    <input type="file" id="fileInput" accept="audio/*">
-                </label>
 
                 <div id="sampleInfo" class="status status-info" style="margin-top: 20px;">
                     No sample loaded yet
@@ -190,6 +189,28 @@
                 </ul>
             </div>
 
+            <div class="code-hint">
+                <h3>Basic Code Example:</h3>
+                <pre><code class="language-javascript">// Load and play an audio file
+const player = new Tone.Player({
+    url: "../resources/audio-samples/drum-loop-120.wav",
+    loop: true,           // Enable looping
+    autostart: false      // Don't start immediately
+}).toDestination();
+
+// Wait for the sample to load
+await Tone.loaded();
+
+// Play the sample
+player.start();
+
+// Control playback
+player.stop();                    // Stop playback
+player.seek(2);                   // Jump to 2 seconds
+player.playbackRate = 1.5;        // Play at 1.5x speed
+player.loop = true;               // Enable looping</code></pre>
+            </div>
+
             <div class="signal-flow">
                 <div class="signal-node">Audio File</div>
                 <div class="signal-arrow">→</div>
@@ -200,6 +221,10 @@
         </footer>
     </div>
 
+    <!-- Prism.js for Syntax Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    
     <!-- Tone.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
     

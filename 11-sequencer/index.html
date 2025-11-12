@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>4-Step Sequencer - Web Audio Workshop</title>
     <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 </head>
 <body>
     <div class="container">
@@ -194,6 +195,30 @@
                 </ul>
             </div>
 
+            <div class="code-hint">
+                <h3>Basic Code Example:</h3>
+                <pre><code class="language-javascript">// Create a synth
+const synth = new Tone.Synth().toDestination();
+
+// Set tempo
+Tone.Transport.bpm.value = 120;
+
+// Create a 4-step sequence
+const notes = ['C4', 'E4', 'G4', 'B4'];
+const sequence = new Tone.Sequence((time, note) => {
+    // This function is called for each step
+    synth.triggerAttackRelease(note, '8n', time);
+}, notes, '4n');  // '4n' = quarter note interval
+
+// Start the sequence and transport
+sequence.start(0);
+Tone.Transport.start();
+
+// Stop everything
+Tone.Transport.stop();
+sequence.stop();</code></pre>
+            </div>
+
             <div class="signal-flow">
                 <div class="signal-node">Transport (Clock)</div>
                 <div class="signal-arrow">→</div>
@@ -206,6 +231,10 @@
         </footer>
     </div>
 
+    <!-- Prism.js for Syntax Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    
     <!-- Tone.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
     

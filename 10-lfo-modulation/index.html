@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LFO Modulation - Web Audio Workshop</title>
     <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 </head>
 <body>
     <div class="container">
@@ -156,6 +157,38 @@
                 </ul>
             </div>
 
+            <div class="code-hint">
+                <h3>Basic Code Example:</h3>
+                <pre><code class="language-javascript">// Create carrier oscillator and filter
+const oscillator = new Tone.Oscillator({
+    frequency: 440,
+    type: 'sawtooth'
+}).start();
+
+const filter = new Tone.Filter({
+    frequency: 1000,
+    type: 'lowpass'
+});
+
+const gain = new Tone.Gain(0.5);
+
+// Create LFO to modulate filter frequency
+const lfo = new Tone.LFO({
+    frequency: 2,        // LFO rate: 2 Hz (2 cycles per second)
+    min: 200,           // Minimum filter frequency
+    max: 2000,          // Maximum filter frequency
+    type: 'sine'        // LFO waveform shape
+}).start();
+
+// Connect: Oscillator → Filter → Gain → Destination
+oscillator.connect(filter);
+filter.connect(gain);
+gain.toDestination();
+
+// Connect LFO to filter frequency (modulation)
+lfo.connect(filter.frequency);</code></pre>
+            </div>
+
             <div class="signal-flow">
                 <div class="signal-node">Carrier Oscillator</div>
                 <div class="signal-arrow">→</div>
@@ -170,6 +203,10 @@
         </footer>
     </div>
 
+    <!-- Prism.js for Syntax Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    
     <!-- Tone.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
     

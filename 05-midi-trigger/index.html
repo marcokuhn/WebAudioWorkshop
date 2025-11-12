@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MIDI-Triggered ADSR - Web Audio Workshop</title>
     <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         .piano-key {
             padding: 40px 10px 10px 10px;
@@ -206,6 +207,38 @@
                 </ul>
             </div>
 
+            <div class="code-hint">
+                <h3>Basic Code Example:</h3>
+                <pre><code class="language-javascript">// Create a polyphonic synthesizer
+const synth = new Tone.PolySynth(Tone.Synth, {
+    envelope: {
+        attack: 0.01,
+        decay: 0.2,
+        sustain: 0.3,
+        release: 0.8
+    }
+}).toDestination();
+
+// Request MIDI access
+navigator.requestMIDIAccess().then(midiAccess => {
+    midiAccess.inputs.forEach(input => {
+        input.onmidimessage = (message) => {
+            const [command, note, velocity] = message.data;
+            
+            if (command === 144 && velocity > 0) {
+                // Note On
+                const freq = Tone.Frequency(note, 'midi').toFrequency();
+                synth.triggerAttack(freq, undefined, velocity / 127);
+            } else if (command === 128 || velocity === 0) {
+                // Note Off
+                const freq = Tone.Frequency(note, 'midi').toFrequency();
+                synth.triggerRelease(freq);
+            }
+        };
+    });
+});</code></pre>
+            </div>
+
             <div class="signal-flow">
                 <div class="signal-node">MIDI Device / Keyboard</div>
                 <div class="signal-arrow">→</div>
@@ -218,6 +251,10 @@
         </footer>
     </div>
 
+    <!-- Prism.js for Syntax Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    
     <!-- Tone.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
     

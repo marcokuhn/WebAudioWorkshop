@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oscillator + Gain - Web Audio Workshop</title>
     <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 </head>
 <body>
     <div class="container">
@@ -141,6 +142,27 @@
                 </ul>
             </div>
 
+            <div class="code-hint">
+                <h3>Basic Code Example:</h3>
+                <pre><code class="language-javascript">// Create oscillator and gain node
+const oscillator = new Tone.Oscillator({
+    frequency: 440,
+    type: 'sine'
+});
+
+const gainNode = new Tone.Gain(-10); // -10 dB
+
+// Connect: Oscillator → Gain → Destination
+oscillator.connect(gainNode);
+gainNode.toDestination();
+
+// Start the oscillator
+oscillator.start();
+
+// Adjust volume
+gainNode.gain.rampTo(-20, 0.5); // Ramp to -20 dB over 0.5 seconds</code></pre>
+            </div>
+
             <div class="signal-flow">
                 <div class="signal-node">Oscillator</div>
                 <div class="signal-arrow">→</div>
@@ -151,6 +173,10 @@
         </footer>
     </div>
 
+    <!-- Prism.js for Syntax Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    
     <!-- Tone.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
     

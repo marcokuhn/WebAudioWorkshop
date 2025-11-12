@@ -94,7 +94,20 @@ function createSynth() {
 // Trigger Envelope
 // ============================================
 
-triggerBtn.addEventListener('click', () => {
+triggerBtn.addEventListener('mousedown', () => {
+    if (!envelope) return;
+    
+    // Trigger the envelope (Attack → Decay → Sustain)
+    envelope.triggerAttack();
+    
+    // Visual feedback
+    triggerBtn.classList.add('active');
+    
+    console.log('🎵 Note triggered (Attack → Decay → Sustain)');
+});
+
+triggerBtn.addEventListener('touchstart', (e) => {
+    e.preventDefault();
     if (!envelope) return;
     
     // Trigger the envelope (Attack → Decay → Sustain)

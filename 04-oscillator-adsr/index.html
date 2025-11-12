@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oscillator + ADSR Envelope - Web Audio Workshop</title>
     <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         .trigger-btn-large {
             font-size: 2em;
@@ -158,6 +159,30 @@
                 </ul>
             </div>
 
+            <div class="code-hint">
+                <h3>Basic Code Example:</h3>
+                <pre><code class="language-javascript">// Create oscillator and envelope
+const oscillator = new Tone.Oscillator({
+    frequency: 440,
+    type: 'sine'
+}).start(); // Start continuous oscillation
+
+const envelope = new Tone.AmplitudeEnvelope({
+    attack: 0.1,    // Attack time in seconds
+    decay: 0.2,     // Decay time in seconds
+    sustain: 0.5,   // Sustain level (0-1)
+    release: 0.8    // Release time in seconds
+});
+
+// Connect: Oscillator → Envelope → Destination
+oscillator.connect(envelope);
+envelope.toDestination();
+
+// Trigger a note
+envelope.triggerAttack();        // Start attack phase
+envelope.triggerRelease('+1');   // Release after 1 second</code></pre>
+            </div>
+
             <div class="signal-flow">
                 <div class="signal-node">Oscillator (Continuous)</div>
                 <div class="signal-arrow">→</div>
@@ -168,6 +193,10 @@
         </footer>
     </div>
 
+    <!-- Prism.js for Syntax Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    
     <!-- Tone.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
     

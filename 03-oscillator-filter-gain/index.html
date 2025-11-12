@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oscillator + Filter + Gain - Web Audio Workshop</title>
     <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 </head>
 <body>
     <div class="container">
@@ -162,6 +163,34 @@
                 </ul>
             </div>
 
+            <div class="code-hint">
+                <h3>Basic Code Example:</h3>
+                <pre><code class="language-javascript">// Create oscillator, filter, and gain
+const oscillator = new Tone.Oscillator({
+    frequency: 220,
+    type: 'sawtooth'
+});
+
+const filter = new Tone.Filter({
+    frequency: 1000,    // Cutoff frequency in Hz
+    type: 'lowpass',    // Filter type
+    Q: 1                // Resonance (0-20+)
+});
+
+const gainNode = new Tone.Gain(-10);
+
+// Connect: Oscillator → Filter → Gain → Destination
+oscillator.connect(filter);
+filter.connect(gainNode);
+gainNode.toDestination();
+
+// Start the oscillator
+oscillator.start();
+
+// Sweep the filter frequency
+filter.frequency.rampTo(5000, 2); // Ramp to 5000 Hz over 2 seconds</code></pre>
+            </div>
+
             <div class="signal-flow">
                 <div class="signal-node">Oscillator</div>
                 <div class="signal-arrow">→</div>
@@ -174,6 +203,10 @@
         </footer>
     </div>
 
+    <!-- Prism.js for Syntax Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    
     <!-- Tone.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
     

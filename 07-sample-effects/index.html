@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sample with Effects - Web Audio Workshop</title>
     <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 </head>
 <body>
     <div class="container">
@@ -23,6 +24,12 @@
                 <button class="btn btn-success" id="startAudioBtn">🎵 Start Audio Engine</button>
                 <div class="status status-warning" id="statusMessage">
                     Click "Start Audio Engine" to enable sound
+                </div>
+                <div class="status status-info" style="margin-top: 10px;">
+                    <strong>⚠️ Important:</strong> This example requires a local web server to load the audio sample due to browser security (CORS).
+                    To run a simple server, open terminal in the project folder and run:<br>
+                    <code style="background: #fff; padding: 5px 10px; border-radius: 4px; display: inline-block; margin-top: 5px;">python -m http.server 8000</code><br>
+                    Then open <code>http://localhost:8000</code> in your browser.
                 </div>
             </div>
 
@@ -216,6 +223,43 @@
                 </ul>
             </div>
 
+            <div class="code-hint">
+                <h3>Basic Code Example:</h3>
+                <pre><code class="language-javascript">// Create player and effects chain
+const player = new Tone.Player({
+    url: "../resources/audio-samples/drum-loop-120.wav",
+    loop: true
+});
+
+const filter = new Tone.Filter({
+    frequency: 1000,
+    type: 'lowpass'
+});
+
+const delay = new Tone.FeedbackDelay({
+    delayTime: '8n',     // Eighth note delay
+    feedback: 0.3,       // 30% feedback
+    wet: 0.5            // 50% mix
+});
+
+const reverb = new Tone.Reverb({
+    decay: 2.0,         // Reverb decay time
+    wet: 0.3            // 30% mix
+});
+
+const gain = new Tone.Gain(0.8);
+
+// Connect the signal chain
+player.connect(filter);
+filter.connect(delay);
+delay.connect(reverb);
+reverb.connect(gain);
+gain.toDestination();
+
+// Start playback
+player.start();</code></pre>
+            </div>
+
             <div class="signal-flow">
                 <div class="signal-node">Sample Player</div>
                 <div class="signal-arrow">→</div>
@@ -232,6 +276,10 @@
         </footer>
     </div>
 
+    <!-- Prism.js for Syntax Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    
     <!-- Tone.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
     

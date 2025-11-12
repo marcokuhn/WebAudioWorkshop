@@ -7,6 +7,7 @@ const startAudioBtn = document.getElementById('startAudioBtn');
 const statusMessage = document.getElementById('statusMessage');
 const controlsSection = document.getElementById('controlsSection');
 const fileInput = document.getElementById('fileInput');
+const uploadBtn = document.getElementById('uploadBtn');
 const loadSampleBtn = document.getElementById('loadSampleBtn');
 const sampleInfo = document.getElementById('sampleInfo');
 const playBtn = document.getElementById('playBtn');
@@ -58,6 +59,14 @@ loadSampleBtn.addEventListener('click', async () => {
 
 // ============================================
 // Load Sample from File Input
+
+// ============================================
+// Upload Button - Trigger File Input
+// ============================================
+
+uploadBtn.addEventListener('click', () => {
+    fileInput.click();
+});
 // ============================================
 
 fileInput.addEventListener('change', async (e) => {
@@ -117,7 +126,10 @@ async function loadSample(url, filename) {
     } catch (error) {
         console.error('Error loading sample:', error);
         sampleInfo.className = 'status status-error';
-        sampleInfo.textContent = `❌ Error loading sample: ${error.message}`;
+        sampleInfo.innerHTML = `
+            <strong>❌ Error loading sample:</strong> ${error.message}<br>
+            <em>If loading the example sample, make sure you're running a local web server (see note above).</em>
+        `;
     }
 }
 
@@ -215,13 +227,33 @@ function stopProgressTracking() {
 }
 
 function updateProgress() {
-    if (!player || !player.buffer) return;
+    if (!player || !player.buffer || !isPlaying) return;
     
-    const currentTime = Tone.Transport.seconds - player._startTime + player._offset;
+    // Use Tone.now() to get accurate playback position
+    const now = Tone.now();
     const duration = player.buffer.duration;
     
-    // Update progress bar
-    progressBar.value = Math.max(0, Math.min(currentTime, duration));
+    // Calculate current time based on when player started
+    // Player state can be accessed but position tracking needs manual calculation
+    let currentTime = 0;
+    
+    if (player.state === 'started' && player._activeSources && player._activeSources.length > 0) {
+        // Estimate current time (this is approximate)
+        currentTime = (now - player._startTime) * player.playbackRate;
+        
+        // Ensure currentTime is a valid number
+        if (!isFinite(currentTime) || currentTime < 0) {
+            currentTime = 0;
+        }
+        
+        // Clamp to duration
+        currentTime = Math.min(currentTime, duration);
+    }
+    
+    // Update progress bar only if value is valid
+    if (isFinite(currentTime)) {
+        progressBar.value = currentTime;
+    }
     
     // Update time display
     const current = formatTime(Math.max(0, currentTime));
