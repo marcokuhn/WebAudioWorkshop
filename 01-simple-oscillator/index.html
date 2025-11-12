@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Oscillator - Web Audio Workshop</title>
+    <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎹 Simple Oscillator</h1>
+            <p class="description">
+                Your first Web Audio synthesizer! An oscillator generates a continuous tone at a specific frequency.
+                Change the pitch by adjusting the frequency slider.
+            </p>
+        </header>
+        
+        <main class="controls">
+            <!-- Start Audio Context Button -->
+            <div class="control-group">
+                <h3>Audio Engine</h3>
+                <button class="btn btn-success" id="startAudioBtn">🎵 Start Audio Engine</button>
+                <div class="status status-warning" id="statusMessage">
+                    Click "Start Audio Engine" to enable sound (browser requirement)
+                </div>
+            </div>
+
+            <!-- Oscillator Controls -->
+            <div class="control-group" id="controlsSection" style="display: none;">
+                <h3>Oscillator Controls</h3>
+                
+                <div class="control-row">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="playBtn">▶️ Start Tone</button>
+                        <button class="btn btn-danger" id="stopBtn" disabled>⏹️ Stop Tone</button>
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Frequency (Pitch)</span>
+                    <div class="control-input">
+                        <input type="range" id="frequencySlider" min="50" max="2000" value="440" step="1">
+                    </div>
+                    <span class="value-display" id="frequencyValue">440 Hz</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Waveform</span>
+                    <div class="control-input">
+                        <select id="waveformSelect">
+                            <option value="sine">Sine (Pure tone)</option>
+                            <option value="square">Square (Hollow)</option>
+                            <option value="sawtooth">Sawtooth (Bright)</option>
+                            <option value="triangle">Triangle (Soft)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="status status-info">
+                    <strong>Musical Note Reference:</strong>
+                    A4 = 440 Hz (orchestra tuning) | 
+                    Middle C (C4) = 261.63 Hz | 
+                    Low C (C3) = 130.81 Hz
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="info-box">
+                <h3>What's happening?</h3>
+                <p>
+                    <strong>Tone.js</strong> creates an oscillator that generates a continuous waveform 
+                    at the frequency you specify. The frequency (measured in Hertz/Hz) determines the pitch:
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li><strong>Lower frequency (50-200 Hz)</strong> = Bass/low notes</li>
+                    <li><strong>Middle frequency (200-800 Hz)</strong> = Mid-range notes</li>
+                    <li><strong>Higher frequency (800-2000 Hz)</strong> = Treble/high notes</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    Different <strong>waveforms</strong> produce different timbres (tone colors):
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li><strong>Sine</strong> - Pure tone, fundamental frequency only</li>
+                    <li><strong>Square</strong> - Hollow sound, odd harmonics</li>
+                    <li><strong>Sawtooth</strong> - Bright sound, all harmonics</li>
+                    <li><strong>Triangle</strong> - Softer than sawtooth, odd harmonics</li>
+                </ul>
+            </div>
+
+            <div class="code-hint">
+                <h3>Key Concepts:</h3>
+                <ul>
+                    <li><code>Tone.Oscillator</code> generates continuous audio signals</li>
+                    <li><code>.toDestination()</code> connects the oscillator to your speakers</li>
+                    <li><code>.start()</code> begins audio generation</li>
+                    <li><code>.stop()</code> halts audio generation</li>
+                    <li>Frequency is measured in Hertz (cycles per second)</li>
+                    <li>Must start audio context after user interaction (browser security)</li>
+                </ul>
+            </div>
+
+            <div class="signal-flow">
+                <div class="signal-node">Oscillator</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Destination (Speakers)</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Tone.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
+    
+    <script>
+        // ============================================
+        // Simple Oscillator Example with Tone.js
+        // ============================================
+
+        // Get references to UI elements
+        const startAudioBtn = document.getElementById('startAudioBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        const controlsSection = document.getElementById('controlsSection');
+        const playBtn = document.getElementById('playBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const frequencySlider = document.getElementById('frequencySlider');
+        const frequencyValue = document.getElementById('frequencyValue');
+        const waveformSelect = document.getElementById('waveformSelect');
+
+        // Audio variables
+        let oscillator = null;
+        let isPlaying = false;
+
+        // ============================================
+        // Start Audio Context
+        // ============================================
+        // Browsers require user interaction before audio can play
+        startAudioBtn.addEventListener('click', async () => {
+            try {
+                // Start Tone.js audio context
+                await Tone.start();
+                console.log('✅ Audio context started');
+                
+                // Update UI
+                startAudioBtn.disabled = true;
+                startAudioBtn.textContent = '✅ Audio Engine Ready';
+                statusMessage.className = 'status status-success';
+                statusMessage.textContent = '✅ Audio engine is ready! You can now create sounds.';
+                controlsSection.style.display = 'block';
+                
+                // Create the oscillator (but don't start it yet)
+                createOscillator();
+                
+            } catch (error) {
+                console.error('Error starting audio:', error);
+                statusMessage.className = 'status status-error';
+                statusMessage.textContent = '❌ Error starting audio. Please try again.';
+            }
+        });
+
+        // ============================================
+        // Create Oscillator
+        // ============================================
+        function createOscillator() {
+            // Create a new oscillator with Tone.js
+            // Default settings: sine wave at 440 Hz (A4 note)
+            oscillator = new Tone.Oscillator({
+                frequency: 440,      // Starting frequency in Hz
+                type: 'sine',        // Waveform type
+                volume: -10          // Volume in decibels (negative = quieter)
+            }).toDestination();      // Connect to speakers
+            
+            console.log('🎵 Oscillator created');
+        }
+
+        // ============================================
+        // Play/Stop Controls
+        // ============================================
+        
+        // Start the tone
+        playBtn.addEventListener('click', () => {
+            if (!oscillator) return;
+            
+            // Start the oscillator
+            oscillator.start();
+            isPlaying = true;
+            
+            // Update UI
+            playBtn.disabled = true;
+            stopBtn.disabled = false;
+            console.log('▶️ Oscillator started at', oscillator.frequency.value, 'Hz');
+        });
+
+        // Stop the tone
+        stopBtn.addEventListener('click', () => {
+            if (!oscillator) return;
+            
+            // Stop the oscillator
+            oscillator.stop();
+            isPlaying = false;
+            
+            // Update UI
+            playBtn.disabled = false;
+            stopBtn.disabled = true;
+            
+            // Create a new oscillator for next time
+            // (Tone.js oscillators can only be started once)
+            createOscillator();
+            
+            // Reapply current settings
+            oscillator.frequency.value = frequencySlider.value;
+            oscillator.type = waveformSelect.value;
+            
+            console.log('⏹️ Oscillator stopped');
+        });
+
+        // ============================================
+        // Frequency Control
+        // ============================================
+        
+        frequencySlider.addEventListener('input', (e) => {
+            const freq = parseFloat(e.target.value);
+            
+            // Update the display
+            frequencyValue.textContent = freq + ' Hz';
+            
+            // Update the oscillator frequency if it exists
+            if (oscillator) {
+                // Use .rampTo() for smooth frequency changes
+                oscillator.frequency.rampTo(freq, 0.1);
+                console.log('🎵 Frequency changed to', freq, 'Hz');
+            }
+        });
+
+        // ============================================
+        // Waveform Control
+        // ============================================
+        
+        waveformSelect.addEventListener('change', (e) => {
+            const waveform = e.target.value;
+            
+            // Update the oscillator waveform if it exists
+            if (oscillator) {
+                oscillator.type = waveform;
+                console.log('🎵 Waveform changed to', waveform);
+            }
+        });
+
+        // ============================================
+        // Helper: Get Musical Note Name from Frequency
+        // ============================================
+        // This is just for educational purposes
+        function frequencyToNote(freq) {
+            const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+            const A4 = 440;
+            const C0 = A4 * Math.pow(2, -4.75);
+            
+            if (freq === 0) return 'N/A';
+            
+            const halfSteps = 12 * Math.log2(freq / C0);
+            const octave = Math.floor(halfSteps / 12);
+            const noteIndex = Math.round(halfSteps % 12);
+            
+            return noteNames[noteIndex] + octave;
+        }
+
+        // Update frequency display with note name
+        frequencySlider.addEventListener('input', (e) => {
+            const freq = parseFloat(e.target.value);
+            const noteName = frequencyToNote(freq);
+            frequencyValue.textContent = `${freq} Hz (${noteName})`;
+        });
+
+        // ============================================
+        // Cleanup on Page Unload
+        // ============================================
+        
+        window.addEventListener('beforeunload', () => {
+            if (oscillator && isPlaying) {
+                oscillator.stop();
+            }
+        });
+    </script>
+</body>
+</html>

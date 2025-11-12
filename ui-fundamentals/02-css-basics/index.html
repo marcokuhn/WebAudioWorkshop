@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Basics - UI Fundamentals</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>CSS Basics for Audio Applications</h1>
+        <p>Learn how to style your web audio interfaces</p>
+    </header>
+
+    <main>
+        <!-- CSS SELECTORS -->
+        <section class="demo-section">
+            <h2>CSS Selectors</h2>
+            <p>Selectors determine which HTML elements to style.</p>
+
+            <div class="demo-box">
+                <h3>Element Selector</h3>
+                <p>Styles all elements of a type</p>
+                <code class="code-block">
+p {
+    color: #333;
+    font-size: 16px;
+}
+                </code>
+            </div>
+
+            <div class="demo-box highlight-demo">
+                <h3>Class Selector</h3>
+                <p class="example-text">Styles elements with a specific class</p>
+                <code class="code-block">
+.example-text {
+    color: #667eea;
+    font-weight: bold;
+}
+                </code>
+            </div>
+
+            <div class="demo-box">
+                <h3>ID Selector</h3>
+                <p id="unique-paragraph">Styles a single unique element</p>
+                <code class="code-block">
+#unique-paragraph {
+    background-color: #fff3e0;
+    padding: 10px;
+}
+                </code>
+            </div>
+
+            <div class="demo-box">
+                <h3>Multiple Classes</h3>
+                <p class="example-text large-text">Element can have multiple classes</p>
+                <code class="code-block">
+&lt;p class="example-text large-text"&gt;...&lt;/p&gt;
+                </code>
+            </div>
+        </section>
+
+        <!-- BOX MODEL -->
+        <section class="demo-section">
+            <h2>The Box Model</h2>
+            <p>Every HTML element is a box with margin, border, padding, and content.</p>
+
+            <div class="box-model-demo">
+                <div class="margin-layer">
+                    MARGIN (space outside)
+                    <div class="border-layer">
+                        BORDER
+                        <div class="padding-layer">
+                            PADDING (space inside)
+                            <div class="content-layer">
+                                CONTENT
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <code class="code-block">
+.element {
+    width: 200px;          /* Content width */
+    height: 100px;         /* Content height */
+    padding: 20px;         /* Space inside border */
+    border: 2px solid #333; /* Border */
+    margin: 15px;          /* Space outside border */
+}
+            </code>
+
+            <div class="box-examples">
+                <div class="box-example-1">Box 1</div>
+                <div class="box-example-2">Box 2</div>
+                <div class="box-example-3">Box 3</div>
+            </div>
+        </section>
+
+        <!-- COLORS -->
+        <section class="demo-section">
+            <h2>Colors & Backgrounds</h2>
+            
+            <div class="color-grid">
+                <div class="color-box color-hex">
+                    <p>Hex Color</p>
+                    <code>#667eea</code>
+                </div>
+                <div class="color-box color-rgb">
+                    <p>RGB Color</p>
+                    <code>rgb(102, 126, 234)</code>
+                </div>
+                <div class="color-box color-rgba">
+                    <p>RGBA (with transparency)</p>
+                    <code>rgba(102, 126, 234, 0.5)</code>
+                </div>
+                <div class="color-box color-gradient">
+                    <p>Gradient</p>
+                    <code>linear-gradient(...)</code>
+                </div>
+            </div>
+        </section>
+
+        <!-- TYPOGRAPHY -->
+        <section class="demo-section">
+            <h2>Typography</h2>
+            
+            <div class="demo-box">
+                <p class="font-demo-1">Font Family: Arial, sans-serif</p>
+                <p class="font-demo-2">Font Family: 'Courier New', monospace</p>
+                <p class="font-demo-3">Font Size: 24px, Font Weight: bold</p>
+                <p class="font-demo-4">Text Align: center</p>
+                <p class="font-demo-5">Letter Spacing: 2px</p>
+            </div>
+
+            <code class="code-block">
+.text {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;        /* normal, bold, 100-900 */
+    text-align: center;       /* left, center, right, justify */
+    letter-spacing: 1px;
+    line-height: 1.6;
+}
+            </code>
+        </section>
+
+        <!-- DISPLAY PROPERTIES -->
+        <section class="demo-section">
+            <h2>Display Properties</h2>
+
+            <h3>Block vs Inline vs Inline-Block</h3>
+            
+            <div class="display-demo">
+                <div class="display-block">Block Element</div>
+                <div class="display-block">Takes Full Width</div>
+            </div>
+
+            <div class="display-demo">
+                <span class="display-inline">Inline</span>
+                <span class="display-inline">Only Takes</span>
+                <span class="display-inline">Needed Width</span>
+            </div>
+
+            <div class="display-demo">
+                <div class="display-inline-block">Inline-Block 1</div>
+                <div class="display-inline-block">Inline-Block 2</div>
+                <div class="display-inline-block">Inline-Block 3</div>
+            </div>
+
+            <code class="code-block">
+.element {
+    display: block;        /* Takes full width, new line */
+    display: inline;       /* Flows with text, no width/height */
+    display: inline-block; /* Flows inline but can have dimensions */
+    display: flex;         /* Flexible box layout (see next example) */
+    display: none;         /* Hide element */
+}
+            </code>
+        </section>
+
+        <!-- BUTTONS -->
+        <section class="demo-section">
+            <h2>Button Styling</h2>
+            
+            <div class="button-gallery">
+                <button class="btn-basic">Basic Button</button>
+                <button class="btn-primary">Primary Button</button>
+                <button class="btn-gradient">Gradient Button</button>
+                <button class="btn-outline">Outline Button</button>
+                <button class="btn-rounded">Rounded Button</button>
+                <button class="btn-disabled" disabled>Disabled</button>
+            </div>
+
+            <code class="code-block">
+.btn-primary {
+    padding: 10px 20px;
+    background-color: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #5568d3;
+    transform: translateY(-2px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+            </code>
+        </section>
+
+        <!-- AUDIO CONTROL STYLING -->
+        <section class="demo-section">
+            <h2>Styled Audio Controls</h2>
+
+            <div class="control-demo">
+                <div class="control-group">
+                    <label for="slider1">Custom Slider</label>
+                    <input type="range" id="slider1" class="custom-slider" min="0" max="100" value="50">
+                    <span class="value-display">50</span>
+                </div>
+
+                <div class="control-group">
+                    <label for="knob-demo">Knob-Style Control</label>
+                    <input type="range" id="knob-demo" class="knob-slider" min="0" max="100" value="75" orient="vertical">
+                    <span class="value-display">75</span>
+                </div>
+
+                <div class="control-group">
+                    <label>Toggle Switch</label>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider-switch"></span>
+                    </label>
+                </div>
+            </div>
+
+            <code class="code-block">
+/* Custom Range Slider */
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    background: #ddd;
+    border-radius: 3px;
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #667eea;
+    border-radius: 50%;
+    cursor: pointer;
+}
+            </code>
+        </section>
+
+        <!-- POSITIONING -->
+        <section class="demo-section">
+            <h2>Positioning</h2>
+            
+            <div class="position-demo-container">
+                <div class="position-static">Static (default)</div>
+                <div class="position-relative">
+                    Relative (shifted from normal position)
+                </div>
+                <div class="position-absolute-container">
+                    <div class="position-absolute">Absolute (positioned within parent)</div>
+                    This is the parent container
+                </div>
+            </div>
+
+            <code class="code-block">
+.element {
+    position: static;      /* Default, normal flow */
+    position: relative;    /* Offset from normal position */
+    position: absolute;    /* Positioned relative to parent */
+    position: fixed;       /* Positioned relative to viewport */
+    position: sticky;      /* Switches between relative and fixed */
+}
+            </code>
+        </section>
+
+        <!-- TRANSITIONS & ANIMATIONS -->
+        <section class="demo-section">
+            <h2>Transitions & Hover Effects</h2>
+
+            <div class="transition-demo-grid">
+                <div class="hover-scale">Hover to Scale</div>
+                <div class="hover-rotate">Hover to Rotate</div>
+                <div class="hover-color">Hover to Change Color</div>
+                <div class="hover-slide">Hover to Slide</div>
+            </div>
+
+            <code class="code-block">
+.element {
+    transition: all 0.3s ease;
+}
+
+.element:hover {
+    transform: scale(1.1);      /* Scale up */
+    transform: rotate(45deg);   /* Rotate */
+    transform: translateX(10px); /* Move right */
+    background-color: #667eea;  /* Change color */
+}
+            </code>
+        </section>
+
+        <!-- PRACTICAL EXAMPLE -->
+        <section class="demo-section">
+            <h2>Practical Audio Interface Example</h2>
+
+            <div class="synth-interface">
+                <div class="synth-header">
+                    <h3>Simple Synthesizer</h3>
+                </div>
+                
+                <div class="synth-controls">
+                    <div class="knob-container">
+                        <div class="visual-knob"></div>
+                        <label>Frequency</label>
+                    </div>
+                    <div class="knob-container">
+                        <div class="visual-knob"></div>
+                        <label>Filter</label>
+                    </div>
+                    <div class="knob-container">
+                        <div class="visual-knob"></div>
+                        <label>Volume</label>
+                    </div>
+                </div>
+
+                <div class="synth-buttons">
+                    <button class="synth-btn">Start</button>
+                    <button class="synth-btn">Stop</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h2>Key Takeaways</h2>
+        <ul>
+            <li>CSS selectors target specific HTML elements for styling</li>
+            <li>The box model controls spacing with margin, padding, and border</li>
+            <li>Colors can be defined using hex, RGB, RGBA, or gradients</li>
+            <li>Typography properties control text appearance</li>
+            <li>Display properties control layout behavior</li>
+            <li>Transitions create smooth animations on hover and other events</li>
+            <li>Custom styling transforms basic inputs into professional interfaces</li>
+        </ul>
+        <p><strong>Next:</strong> <a href="../03-flexbox-layout/index.html">Learn Flexbox for responsive layouts</a></p>
+    </footer>
+
+    <script>
+        // Interactive demonstrations
+        const slider1 = document.getElementById('slider1');
+        const knobDemo = document.getElementById('knob-demo');
+        
+        slider1.addEventListener('input', function() {
+            this.nextElementSibling.textContent = this.value;
+        });
+
+        knobDemo.addEventListener('input', function() {
+            this.nextElementSibling.textContent = this.value;
+        });
+    </script>
+</body>
+</html>

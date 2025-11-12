@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oscillator + Gain - Web Audio Workshop</title>
+    <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎚️ Oscillator + Gain Control</h1>
+            <p class="description">
+                Learn about signal routing! The oscillator now passes through a Gain node before reaching your speakers.
+                This gives us precise volume control and introduces the concept of audio signal chains.
+            </p>
+        </header>
+        
+        <main class="controls">
+            <!-- Start Audio Context Button -->
+            <div class="control-group">
+                <h3>Audio Engine</h3>
+                <button class="btn btn-success" id="startAudioBtn">🎵 Start Audio Engine</button>
+                <div class="status status-warning" id="statusMessage">
+                    Click "Start Audio Engine" to enable sound
+                </div>
+            </div>
+
+            <!-- Oscillator Controls -->
+            <div class="control-group" id="controlsSection" style="display: none;">
+                <h3>Oscillator Controls</h3>
+                
+                <div class="control-row">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="playBtn">▶️ Start Tone</button>
+                        <button class="btn btn-danger" id="stopBtn" disabled>⏹️ Stop Tone</button>
+                        <button class="btn btn-secondary" id="muteBtn">🔇 Mute</button>
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Frequency</span>
+                    <div class="control-input">
+                        <input type="range" id="frequencySlider" min="50" max="2000" value="440" step="1">
+                    </div>
+                    <span class="value-display" id="frequencyValue">440 Hz</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Waveform</span>
+                    <div class="control-input">
+                        <select id="waveformSelect">
+                            <option value="sine">Sine</option>
+                            <option value="square">Square</option>
+                            <option value="sawtooth">Sawtooth</option>
+                            <option value="triangle">Triangle</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gain Controls -->
+            <div class="control-group" id="gainSection" style="display: none;">
+                <h3>Gain (Volume) Controls</h3>
+                
+                <div class="control-row">
+                    <span class="control-label">Volume (dB)</span>
+                    <div class="control-input">
+                        <input type="range" id="gainSlider" min="-60" max="0" value="-10" step="0.5">
+                    </div>
+                    <span class="value-display" id="gainValue">-10 dB</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Volume (%)</span>
+                    <div class="control-input">
+                        <input type="range" id="volumeSlider" min="0" max="100" value="32" step="1">
+                    </div>
+                    <span class="value-display" id="volumeValue">32%</span>
+                </div>
+
+                <div class="status status-info">
+                    <strong>Understanding Decibels (dB):</strong><br>
+                    0 dB = Maximum (100%) | 
+                    -6 dB ≈ 50% | 
+                    -12 dB ≈ 25% | 
+                    -20 dB ≈ 10% | 
+                    -60 dB = Silence (0%)
+                </div>
+            </div>
+
+            <!-- Visual Meter -->
+            <div class="control-group" id="meterSection" style="display: none;">
+                <h3>Volume Meter</h3>
+                <div style="background: #1a1a1a; padding: 20px; border-radius: 12px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="color: #fff; min-width: 60px;">Level:</span>
+                        <div style="flex: 1; height: 30px; background: #333; border-radius: 15px; overflow: hidden; position: relative;">
+                            <div id="volumeMeter" style="height: 100%; background: linear-gradient(90deg, #28a745 0%, #ffc107 70%, #dc3545 100%); width: 32%; transition: width 0.1s ease;"></div>
+                        </div>
+                        <span id="meterValue" style="color: #fff; min-width: 60px; font-weight: bold;">32%</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="info-box">
+                <h3>What's happening?</h3>
+                <p>
+                    We've introduced a <strong>Gain node</strong> between the oscillator and the destination (speakers).
+                    This creates a simple signal chain:
+                </p>
+                <p style="margin-top: 15px;">
+                    <strong>Oscillator → Gain → Destination</strong>
+                </p>
+                <p style="margin-top: 15px;">
+                    The Gain node controls volume using <strong>decibels (dB)</strong>, which is the professional 
+                    audio standard. Decibels use a logarithmic scale that matches how our ears perceive loudness:
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li><strong>0 dB</strong> = No change (100% volume)</li>
+                    <li><strong>-6 dB</strong> = Half the power (≈ 50% perceived volume)</li>
+                    <li><strong>-∞ dB</strong> = Silence (0% volume)</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    You can also think in percentages (0-100%), which is more intuitive but less precise.
+                    The two sliders control the same Gain node but use different scales.
+                </p>
+            </div>
+
+            <div class="code-hint">
+                <h3>Key Concepts:</h3>
+                <ul>
+                    <li><code>Tone.Gain</code> controls volume in the signal chain</li>
+                    <li><code>.connect()</code> creates connections between audio nodes</li>
+                    <li>Decibels (dB) use logarithmic scale, percentages use linear scale</li>
+                    <li><code>.gain.value</code> sets volume (0 = silence, 1 = full volume)</li>
+                    <li><code>Tone.dbToGain()</code> converts decibels to gain values</li>
+                    <li>Muting is achieved by setting gain to 0 (or -∞ dB)</li>
+                </ul>
+            </div>
+
+            <div class="signal-flow">
+                <div class="signal-node">Oscillator</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Gain Node</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Destination</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Tone.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
+    
+    <script>
+        // ============================================
+        // Oscillator + Gain Example
+        // ============================================
+
+        // UI Elements
+        const startAudioBtn = document.getElementById('startAudioBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        const controlsSection = document.getElementById('controlsSection');
+        const gainSection = document.getElementById('gainSection');
+        const meterSection = document.getElementById('meterSection');
+        const playBtn = document.getElementById('playBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const muteBtn = document.getElementById('muteBtn');
+        const frequencySlider = document.getElementById('frequencySlider');
+        const frequencyValue = document.getElementById('frequencyValue');
+        const waveformSelect = document.getElementById('waveformSelect');
+        const gainSlider = document.getElementById('gainSlider');
+        const gainValue = document.getElementById('gainValue');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeValue = document.getElementById('volumeValue');
+        const volumeMeter = document.getElementById('volumeMeter');
+        const meterValue = document.getElementById('meterValue');
+
+        // Audio nodes
+        let oscillator = null;
+        let gainNode = null;
+        let isPlaying = false;
+        let isMuted = false;
+        let lastGainValue = -10; // Store last gain for mute/unmute
+
+        // ============================================
+        // Start Audio Context
+        // ============================================
+        
+        startAudioBtn.addEventListener('click', async () => {
+            try {
+                await Tone.start();
+                console.log('✅ Audio context started');
+                
+                // Update UI
+                startAudioBtn.disabled = true;
+                startAudioBtn.textContent = '✅ Audio Engine Ready';
+                statusMessage.className = 'status status-success';
+                statusMessage.textContent = '✅ Audio engine is ready!';
+                controlsSection.style.display = 'block';
+                gainSection.style.display = 'block';
+                meterSection.style.display = 'block';
+                
+                // Create audio chain
+                createAudioChain();
+                
+            } catch (error) {
+                console.error('Error starting audio:', error);
+                statusMessage.className = 'status status-error';
+                statusMessage.textContent = '❌ Error starting audio. Please try again.';
+            }
+        });
+
+        // ============================================
+        // Create Audio Signal Chain
+        // ============================================
+        
+        function createAudioChain() {
+            // Create the Gain node
+            // This controls the volume of our signal
+            gainNode = new Tone.Gain(-10).toDestination();
+            
+            // Create the Oscillator
+            // Connect it to the Gain node (not directly to destination)
+            oscillator = new Tone.Oscillator({
+                frequency: 440,
+                type: 'sine'
+            }).connect(gainNode); // Connect oscillator → gain
+            
+            // The Gain node is already connected to destination
+            // Signal flow: Oscillator → Gain → Destination
+            
+            console.log('🎵 Audio chain created: Oscillator → Gain → Destination');
+        }
+
+        // ============================================
+        // Play/Stop Controls
+        // ============================================
+        
+        playBtn.addEventListener('click', () => {
+            if (!oscillator) return;
+            
+            oscillator.start();
+            isPlaying = true;
+            
+            playBtn.disabled = true;
+            stopBtn.disabled = false;
+            console.log('▶️ Oscillator started');
+        });
+
+        stopBtn.addEventListener('click', () => {
+            if (!oscillator) return;
+            
+            oscillator.stop();
+            isPlaying = false;
+            
+            playBtn.disabled = false;
+            stopBtn.disabled = true;
+            
+            // Recreate audio chain
+            createAudioChain();
+            oscillator.frequency.value = frequencySlider.value;
+            oscillator.type = waveformSelect.value;
+            
+            console.log('⏹️ Oscillator stopped');
+        });
+
+        // ============================================
+        // Mute Control
+        // ============================================
+        
+        muteBtn.addEventListener('click', () => {
+            if (!gainNode) return;
+            
+            isMuted = !isMuted;
+            
+            if (isMuted) {
+                // Store current gain and mute
+                lastGainValue = gainNode.gain.value;
+                gainNode.gain.rampTo(Tone.dbToGain(-Infinity), 0.05);
+                muteBtn.textContent = '🔊 Unmute';
+                muteBtn.className = 'btn btn-success';
+                console.log('🔇 Muted');
+            } else {
+                // Restore previous gain
+                gainNode.gain.rampTo(lastGainValue, 0.05);
+                muteBtn.textContent = '🔇 Mute';
+                muteBtn.className = 'btn btn-secondary';
+                console.log('🔊 Unmuted');
+            }
+        });
+
+        // ============================================
+        // Frequency Control
+        // ============================================
+        
+        frequencySlider.addEventListener('input', (e) => {
+            const freq = parseFloat(e.target.value);
+            frequencyValue.textContent = freq + ' Hz';
+            
+            if (oscillator) {
+                oscillator.frequency.rampTo(freq, 0.1);
+            }
+        });
+
+        // ============================================
+        // Waveform Control
+        // ============================================
+        
+        waveformSelect.addEventListener('change', (e) => {
+            if (oscillator) {
+                oscillator.type = e.target.value;
+                console.log('🎵 Waveform:', e.target.value);
+            }
+        });
+
+        // ============================================
+        // Gain Control (Decibels)
+        // ============================================
+        
+        gainSlider.addEventListener('input', (e) => {
+            const dB = parseFloat(e.target.value);
+            gainValue.textContent = dB + ' dB';
+            
+            if (gainNode && !isMuted) {
+                // Convert dB to linear gain value
+                const gainLinear = Tone.dbToGain(dB);
+                gainNode.gain.rampTo(gainLinear, 0.05);
+                lastGainValue = gainLinear;
+                
+                // Update percentage slider
+                const percentage = Math.round(gainLinear * 100);
+                volumeSlider.value = percentage;
+                volumeValue.textContent = percentage + '%';
+                
+                // Update meter
+                updateMeter(percentage);
+                
+                console.log(`🎚️ Gain: ${dB} dB (${percentage}%)`);
+            }
+        });
+
+        // ============================================
+        // Volume Control (Percentage)
+        // ============================================
+        
+        volumeSlider.addEventListener('input', (e) => {
+            const percentage = parseInt(e.target.value);
+            volumeValue.textContent = percentage + '%';
+            
+            if (gainNode && !isMuted) {
+                // Convert percentage to linear gain (0-1)
+                const gainLinear = percentage / 100;
+                gainNode.gain.rampTo(gainLinear, 0.05);
+                lastGainValue = gainLinear;
+                
+                // Convert to dB and update dB slider
+                const dB = Tone.gainToDb(gainLinear);
+                gainSlider.value = dB;
+                gainValue.textContent = dB.toFixed(1) + ' dB';
+                
+                // Update meter
+                updateMeter(percentage);
+                
+                console.log(`🎚️ Volume: ${percentage}% (${dB.toFixed(1)} dB)`);
+            }
+        });
+
+        // ============================================
+        // Update Visual Meter
+        // ============================================
+        
+        function updateMeter(percentage) {
+            volumeMeter.style.width = percentage + '%';
+            meterValue.textContent = percentage + '%';
+        }
+
+        // ============================================
+        // Cleanup
+        // ============================================
+        
+        window.addEventListener('beforeunload', () => {
+            if (oscillator && isPlaying) {
+                oscillator.stop();
+            }
+        });
+    </script>
+</body>
+</html>

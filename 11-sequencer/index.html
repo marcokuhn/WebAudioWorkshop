@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4-Step Sequencer - Web Audio Workshop</title>
+    <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎹 Simple 4-Step Sequencer</h1>
+            <p class="description">
+                Create rhythmic patterns! A sequencer plays notes in sequence, allowing you to program
+                melodies and beats. This is the foundation of drum machines and step sequencers.
+            </p>
+        </header>
+        
+        <main class="controls">
+            <!-- Start Audio Context Button -->
+            <div class="control-group">
+                <h3>Audio Engine</h3>
+                <button class="btn btn-success" id="startAudioBtn">🎵 Start Audio Engine</button>
+                <div class="status status-warning" id="statusMessage">
+                    Click "Start Audio Engine" to enable sound
+                </div>
+            </div>
+
+            <!-- Transport Controls -->
+            <div class="control-group" id="controlsSection" style="display: none;">
+                <h3>Transport Controls</h3>
+                
+                <div class="control-row">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="playBtn">▶️ Play</button>
+                        <button class="btn btn-danger" id="stopBtn" disabled>⏹️ Stop</button>
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Tempo (BPM)</span>
+                    <div class="control-input">
+                        <input type="range" id="bpmSlider" min="60" max="180" value="120" step="1">
+                    </div>
+                    <span class="value-display" id="bpmValue">120 BPM</span>
+                </div>
+            </div>
+
+            <!-- Step Sequencer Grid -->
+            <div class="control-group" id="sequencerSection" style="display: none;">
+                <h3>Sequencer Steps</h3>
+                
+                <div class="sequencer-steps">
+                    <button class="step active" id="step0Btn">
+                        Step 1<br><small>ON</small>
+                    </button>
+                    <button class="step active" id="step1Btn">
+                        Step 2<br><small>ON</small>
+                    </button>
+                    <button class="step active" id="step2Btn">
+                        Step 3<br><small>ON</small>
+                    </button>
+                    <button class="step active" id="step3Btn">
+                        Step 4<br><small>ON</small>
+                    </button>
+                </div>
+
+                <div class="status status-info">
+                    Click steps to turn them on/off. When a step is playing, it will pulse!
+                </div>
+            </div>
+
+            <!-- Note Selection -->
+            <div class="control-group" id="noteSection" style="display: none;">
+                <h3>Note Selection Per Step</h3>
+                
+                <div class="control-row">
+                    <span class="control-label">Step 1 Note</span>
+                    <div class="control-input">
+                        <select id="step0Note">
+                            <option value="C3">C3 (Low)</option>
+                            <option value="E3">E3</option>
+                            <option value="G3">G3</option>
+                            <option value="C4" selected>C4 (Middle)</option>
+                            <option value="E4">E4</option>
+                            <option value="G4">G4</option>
+                            <option value="C5">C5 (High)</option>
+                            <option value="E5">E5</option>
+                            <option value="G5">G5</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Step 2 Note</span>
+                    <div class="control-input">
+                        <select id="step1Note">
+                            <option value="C3">C3 (Low)</option>
+                            <option value="E3">E3</option>
+                            <option value="G3">G3</option>
+                            <option value="C4">C4 (Middle)</option>
+                            <option value="E4" selected>E4</option>
+                            <option value="G4">G4</option>
+                            <option value="C5">C5 (High)</option>
+                            <option value="E5">E5</option>
+                            <option value="G5">G5</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Step 3 Note</span>
+                    <div class="control-input">
+                        <select id="step2Note">
+                            <option value="C3">C3 (Low)</option>
+                            <option value="E3">E3</option>
+                            <option value="G3">G3</option>
+                            <option value="C4">C4 (Middle)</option>
+                            <option value="E4">E4</option>
+                            <option value="G4" selected>G4</option>
+                            <option value="C5">C5 (High)</option>
+                            <option value="E5">E5</option>
+                            <option value="G5">G5</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Step 4 Note</span>
+                    <div class="control-input">
+                        <select id="step3Note">
+                            <option value="C3">C3 (Low)</option>
+                            <option value="E3">E3</option>
+                            <option value="G3">G3</option>
+                            <option value="C4">C4 (Middle)</option>
+                            <option value="E4">E4</option>
+                            <option value="G4">G4</option>
+                            <option value="C5" selected>C5 (High)</option>
+                            <option value="E5">E5</option>
+                            <option value="G5">G5</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="status status-info">
+                    <strong>Try this:</strong> Create ascending melody (C4, E4, G4, C5) or turn off some steps for rhythm!
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="info-box">
+                <h3>What's happening?</h3>
+                <p>
+                    A <strong>step sequencer</strong> plays notes in a repeating pattern. Each step can be:
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li><strong>Active/Inactive:</strong> Turn steps on or off to create rhythms</li>
+                    <li><strong>Pitched:</strong> Each step can play a different note</li>
+                    <li><strong>Timed:</strong> Steps play at regular intervals based on tempo (BPM)</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    <strong>Key Concepts:</strong>
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li><strong>Transport:</strong> Tone.js timeline that controls playback timing</li>
+                    <li><strong>Sequence:</strong> A pattern that repeats automatically</li>
+                    <li><strong>BPM (Beats Per Minute):</strong> Controls playback speed</li>
+                    <li><strong>Scheduling:</strong> Notes are scheduled precisely for tight timing</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    <strong>Real-World Applications:</strong>
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li>Drum machines (TR-808, TR-909)</li>
+                    <li>Bassline sequencers (TB-303)</li>
+                    <li>Melody sequencers</li>
+                    <li>Generative music systems</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    Most electronic music uses sequencers to create patterns and loops!
+                </p>
+            </div>
+
+            <div class="code-hint">
+                <h3>Key Concepts:</h3>
+                <ul>
+                    <li><code>Tone.Transport</code> is the global timeline/clock</li>
+                    <li><code>Tone.Sequence</code> creates repeating patterns</li>
+                    <li><code>.bpm.value</code> controls tempo in beats per minute</li>
+                    <li><code>Tone.Draw.schedule()</code> syncs visuals with audio</li>
+                    <li>Time values like <code>'4n'</code> mean quarter note</li>
+                    <li><code>.triggerAttackRelease()</code> plays notes with duration</li>
+                </ul>
+            </div>
+
+            <div class="signal-flow">
+                <div class="signal-node">Transport (Clock)</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Sequence (Pattern)</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Synth</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Destination</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Tone.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
+    
+    <!-- Our JavaScript -->
+    <script src="script.js"></script>
+    
+    <script>
+        // Show sections after audio starts
+        document.getElementById('startAudioBtn').addEventListener('click', () => {
+            setTimeout(() => {
+                document.getElementById('sequencerSection').style.display = 'block';
+                document.getElementById('noteSection').style.display = 'block';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

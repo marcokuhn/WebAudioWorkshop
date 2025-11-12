@@ -1,0 +1,577 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+}
+
+header {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+header h1 {
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+footer {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+.demo-section {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.demo-section h2 {
+    color: #667eea;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #667eea;
+}
+
+.demo-section h3 {
+    color: #764ba2;
+    margin: 25px 0 15px 0;
+    font-size: 18px;
+}
+
+.info-box {
+    background: #f0f4ff;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+    margin: 15px 0;
+}
+
+.info-box h3 {
+    margin-top: 0;
+}
+
+.info-box code {
+    background: #e0e7ff;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.code-block {
+    display: block;
+    background: #2d2d2d;
+    color: #f8f8f2;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+    white-space: pre;
+    line-height: 1.5;
+}
+
+/* Flex Container Demos */
+.flex-container {
+    background: #f8f9fa;
+    border: 2px dashed #667eea;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+    min-height: 80px;
+}
+
+.flex-item {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    min-width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Flex Direction */
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Justify Content */
+.justify-start {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.justify-center {
+    display: flex;
+    justify-content: center;
+}
+
+.justify-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.justify-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.justify-around {
+    display: flex;
+    justify-content: space-around;
+}
+
+.justify-evenly {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+/* Align Items */
+.tall {
+    min-height: 150px;
+}
+
+.align-start {
+    display: flex;
+    align-items: flex-start;
+}
+
+.align-center {
+    display: flex;
+    align-items: center;
+}
+
+.align-end {
+    display: flex;
+    align-items: flex-end;
+}
+
+.align-stretch {
+    display: flex;
+    align-items: stretch;
+}
+
+.no-height {
+    height: auto;
+}
+
+/* Gap */
+.gap-small {
+    display: flex;
+    gap: 10px;
+}
+
+.gap-large {
+    display: flex;
+    gap: 30px;
+}
+
+/* Flex Wrap */
+.flex-nowrap {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.wide {
+    min-width: 150px;
+}
+
+/* Practical Examples */
+
+/* 1. Control Panel */
+.control-panel {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.control-btn {
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.control-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* 2. Knob Grid */
+.knob-grid {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 30px;
+    background: #2d2d2d;
+    border-radius: 10px;
+    margin: 15px 0;
+}
+
+.knob-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.knob {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    box-shadow: 
+        inset 0 2px 10px rgba(255, 255, 255, 0.3),
+        0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    cursor: pointer;
+}
+
+.knob::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 30px;
+    background: white;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+.knob-item label {
+    color: #aaa;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* 3. Slider Row */
+.slider-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.slider-row label {
+    min-width: 100px;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.slider-row input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 6px;
+    background: #ddd;
+    border-radius: 3px;
+    outline: none;
+}
+
+.slider-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #667eea;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.slider-row .value {
+    min-width: 80px;
+    text-align: right;
+    font-weight: bold;
+    color: #764ba2;
+}
+
+/* 4. Vertical Stack */
+.vertical-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.envelope-control {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.envelope-control label {
+    min-width: 80px;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.envelope-control input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 6px;
+    background: #ddd;
+    border-radius: 3px;
+}
+
+.envelope-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #764ba2;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* 5. Button Grid */
+.button-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.grid-btn {
+    padding: 20px 30px;
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 70px;
+}
+
+.grid-btn:hover {
+    background: #667eea;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* 6. Complete Synthesizer */
+.synthesizer {
+    background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+    border-radius: 15px;
+    padding: 30px;
+    margin: 20px 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.synth-header {
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #444;
+}
+
+.synth-header h4 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.synth-controls {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.control-section {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    min-width: 200px;
+}
+
+.control-section h5 {
+    color: #aaa;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.knob-row {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+}
+
+.mini-knob {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.knob.small {
+    width: 60px;
+    height: 60px;
+}
+
+.knob.small::after {
+    height: 22px;
+    top: 8px;
+}
+
+.mini-knob label {
+    color: #888;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.synth-footer {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #444;
+}
+
+.synth-action-btn {
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.synth-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+/* Centering Demo */
+.centering-demo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    background: #f8f9fa;
+    border: 2px dashed #667eea;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.centered-content {
+    text-align: center;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.centered-content h3 {
+    color: #667eea;
+    margin: 0 0 10px 0;
+}
+
+.centered-content p {
+    color: #666;
+    margin: 0;
+}
+
+/* Footer Cheat Sheet */
+.cheat-sheet {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.cheat-column {
+    flex: 1;
+    min-width: 300px;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.cheat-column h3 {
+    color: #667eea;
+    margin-bottom: 15px;
+}
+
+.cheat-column ul {
+    list-style: none;
+    padding: 0;
+}
+
+.cheat-column li {
+    padding: 8px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.cheat-column code {
+    background: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #667eea;
+    font-family: 'Courier New', monospace;
+}

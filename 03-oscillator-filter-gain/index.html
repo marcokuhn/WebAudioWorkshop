@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oscillator + Filter + Gain - Web Audio Workshop</title>
+    <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎛️ Oscillator + Filter + Gain</h1>
+            <p class="description">
+                Introducing audio effects! A filter shapes the sound by removing or emphasizing certain frequencies.
+                This is essential for sound design and creating interesting textures.
+            </p>
+        </header>
+        
+        <main class="controls">
+            <!-- Start Audio Context Button -->
+            <div class="control-group">
+                <h3>Audio Engine</h3>
+                <button class="btn btn-success" id="startAudioBtn">🎵 Start Audio Engine</button>
+                <div class="status status-warning" id="statusMessage">
+                    Click "Start Audio Engine" to enable sound
+                </div>
+            </div>
+
+            <!-- Oscillator Controls -->
+            <div class="control-group" id="controlsSection" style="display: none;">
+                <h3>Oscillator Controls</h3>
+                
+                <div class="control-row">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="playBtn">▶️ Start Tone</button>
+                        <button class="btn btn-danger" id="stopBtn" disabled>⏹️ Stop Tone</button>
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Frequency</span>
+                    <div class="control-input">
+                        <input type="range" id="frequencySlider" min="50" max="2000" value="220" step="1">
+                    </div>
+                    <span class="value-display" id="frequencyValue">220 Hz</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Waveform</span>
+                    <div class="control-input">
+                        <select id="waveformSelect">
+                            <option value="sine">Sine</option>
+                            <option value="square">Square</option>
+                            <option value="sawtooth" selected>Sawtooth (Best for filtering)</option>
+                            <option value="triangle">Triangle</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Controls -->
+            <div class="control-group" id="filterSection" style="display: none;">
+                <h3>Filter Controls</h3>
+                
+                <div class="control-row">
+                    <span class="control-label">Filter On/Off</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="filterToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <span class="value-display" id="filterStatus">Enabled</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Filter Type</span>
+                    <div class="control-input">
+                        <select id="filterTypeSelect">
+                            <option value="lowpass">Low-pass (Remove highs)</option>
+                            <option value="highpass">High-pass (Remove lows)</option>
+                            <option value="bandpass">Band-pass (Keep middle)</option>
+                            <option value="notch">Notch (Remove middle)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Cutoff Frequency</span>
+                    <div class="control-input">
+                        <input type="range" id="filterCutoffSlider" min="50" max="5000" value="1000" step="10">
+                    </div>
+                    <span class="value-display" id="filterCutoffValue">1000 Hz</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Resonance (Q)</span>
+                    <div class="control-input">
+                        <input type="range" id="filterResonanceSlider" min="0.1" max="20" value="1" step="0.1">
+                    </div>
+                    <span class="value-display" id="filterResonanceValue">1.0</span>
+                </div>
+
+                <div class="status status-info">
+                    <strong>Try this:</strong> Set waveform to Sawtooth, start the tone, then slowly move the cutoff frequency slider.
+                    Increase resonance to emphasize the cutoff frequency!
+                </div>
+            </div>
+
+            <!-- Gain Controls -->
+            <div class="control-group" id="gainSection" style="display: none;">
+                <h3>Volume Control</h3>
+                
+                <div class="control-row">
+                    <span class="control-label">Volume</span>
+                    <div class="control-input">
+                        <input type="range" id="volumeSlider" min="0" max="100" value="30" step="1">
+                    </div>
+                    <span class="value-display" id="volumeValue">30%</span>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="info-box">
+                <h3>What's happening?</h3>
+                <p>
+                    A <strong>Filter</strong> is an audio effect that removes or emphasizes certain frequencies.
+                    Our signal chain now has three nodes:
+                </p>
+                <p style="margin-top: 15px;">
+                    <strong>Oscillator → Filter → Gain → Destination</strong>
+                </p>
+                <p style="margin-top: 15px;">
+                    <strong>Filter Types:</strong>
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li><strong>Low-pass:</strong> Allows low frequencies through, removes high frequencies</li>
+                    <li><strong>High-pass:</strong> Allows high frequencies through, removes low frequencies</li>
+                    <li><strong>Band-pass:</strong> Only allows a specific frequency range through</li>
+                    <li><strong>Notch:</strong> Removes a specific frequency range</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    <strong>Key Parameters:</strong>
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li><strong>Cutoff Frequency:</strong> The frequency where the filter starts to take effect</li>
+                    <li><strong>Resonance (Q):</strong> Emphasizes frequencies near the cutoff, creating a "peak"</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    Filters are fundamental to sound design. Most synthesizers use filters to shape their sound!
+                </p>
+            </div>
+
+            <div class="code-hint">
+                <h3>Key Concepts:</h3>
+                <ul>
+                    <li><code>Tone.Filter</code> creates a filter effect in the signal chain</li>
+                    <li><code>.frequency</code> controls the cutoff frequency</li>
+                    <li><code>.Q</code> controls resonance (emphasis at cutoff)</li>
+                    <li><code>.type</code> determines filter behavior (lowpass, highpass, etc.)</li>
+                    <li>Filters can be bypassed by reconnecting the signal chain</li>
+                    <li>Sawtooth and square waves work best with filters (many harmonics)</li>
+                </ul>
+            </div>
+
+            <div class="signal-flow">
+                <div class="signal-node">Oscillator</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Filter</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Gain</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Destination</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Tone.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
+    
+    <!-- Our JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

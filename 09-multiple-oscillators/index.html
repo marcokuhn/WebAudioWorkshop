@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Oscillators - Harmony & Chords - Web Audio Workshop</title>
+    <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎼 Multiple Oscillators - Harmony & Chords</h1>
+            <p class="description">
+                Create rich, layered sounds by combining multiple oscillators! Learn how to build chords,
+                harmonies, and complex timbres using frequency relationships and detuning.
+            </p>
+        </header>
+        
+        <main class="controls">
+            <!-- Start Audio Context Button -->
+            <div class="control-group">
+                <h3>Audio Engine</h3>
+                <button class="btn btn-success" id="startAudioBtn">🎵 Start Audio Engine</button>
+                <div class="status status-warning" id="statusMessage">
+                    Click "Start Audio Engine" to enable sound
+                </div>
+            </div>
+
+            <!-- Chord Controls -->
+            <div class="control-group" id="controlsSection" style="display: none;">
+                <h3>Chord Generator</h3>
+                
+                <div class="control-row">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="playBtn">▶️ Play Chord</button>
+                        <button class="btn btn-danger" id="stopBtn" disabled>⏹️ Stop</button>
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Root Note</span>
+                    <div class="control-input">
+                        <input type="range" id="rootNoteSlider" min="36" max="72" value="48" step="1">
+                    </div>
+                    <span class="value-display" id="rootNoteValue">C3</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Chord Type</span>
+                    <div class="control-input">
+                        <select id="chordTypeSelect">
+                            <option value="major">Major (Happy)</option>
+                            <option value="minor">Minor (Sad)</option>
+                            <option value="diminished">Diminished (Tense)</option>
+                            <option value="augmented">Augmented (Mysterious)</option>
+                            <option value="sus2">Sus2 (Open)</option>
+                            <option value="sus4">Sus4 (Suspended)</option>
+                            <option value="major7">Major 7th (Jazzy)</option>
+                            <option value="minor7">Minor 7th (Smooth)</option>
+                            <option value="power">Power Chord (Rock!)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Waveform</span>
+                    <div class="control-input">
+                        <select id="waveformSelect">
+                            <option value="sine">Sine</option>
+                            <option value="triangle">Triangle</option>
+                            <option value="sawtooth" selected>Sawtooth</option>
+                            <option value="square">Square</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="status status-info">
+                    <strong>Try this:</strong> Select different chord types to hear how they sound. 
+                    Major chords sound happy, minor chords sound sad!
+                </div>
+            </div>
+
+            <!-- Individual Oscillator Controls -->
+            <div class="control-group" id="mixerSection" style="display: none;">
+                <h3>Oscillator Mixer</h3>
+                
+                <div class="control-row">
+                    <span class="control-label">Oscillator 1 (Root)</span>
+                    <div class="control-input">
+                        <input type="range" id="osc1VolumeSlider" min="0" max="100" value="33" step="1">
+                    </div>
+                    <span class="value-display" id="osc1VolumeValue">33%</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Oscillator 2 (Third)</span>
+                    <div class="control-input">
+                        <input type="range" id="osc2VolumeSlider" min="0" max="100" value="33" step="1">
+                    </div>
+                    <span class="value-display" id="osc2VolumeValue">33%</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Oscillator 3 (Fifth)</span>
+                    <div class="control-input">
+                        <input type="range" id="osc3VolumeSlider" min="0" max="100" value="33" step="1">
+                    </div>
+                    <span class="value-display" id="osc3VolumeValue">33%</span>
+                </div>
+            </div>
+
+            <!-- Detune Control -->
+            <div class="control-group" id="detuneSection" style="display: none;">
+                <h3>Voice Richness</h3>
+                
+                <div class="control-row">
+                    <span class="control-label">Detune Amount</span>
+                    <div class="control-input">
+                        <input type="range" id="detuneSlider" min="0" max="20" value="5" step="0.5">
+                    </div>
+                    <span class="value-display" id="detuneValue">5 cents</span>
+                </div>
+
+                <div class="status status-info">
+                    <strong>Detune:</strong> Slightly offset each oscillator's pitch to create a richer, 
+                    more organic sound. This simulates natural instruments and analog synthesizers.
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="info-box">
+                <h3>What's happening?</h3>
+                <p>
+                    We're using <strong>three oscillators</strong> running simultaneously at different frequencies 
+                    to create chords and harmonies. Each oscillator plays a different note in the chord.
+                </p>
+                <p style="margin-top: 15px;">
+                    <strong>Music Theory Basics:</strong>
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li><strong>Intervals:</strong> The distance between two notes (measured in semitones)</li>
+                    <li><strong>Triad:</strong> A three-note chord (root, third, fifth)</li>
+                    <li><strong>Major Chord:</strong> Root + 4 semitones + 7 semitones (happy sound)</li>
+                    <li><strong>Minor Chord:</strong> Root + 3 semitones + 7 semitones (sad sound)</li>
+                    <li><strong>Power Chord:</strong> Root + 7 semitones + 12 semitones (neutral, strong)</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    <strong>Detuning:</strong> Slightly offsetting oscillator frequencies creates a richer, 
+                    "fatter" sound. This is how analog synthesizers achieve their warm, organic tone. 
+                    Real string sections and choirs naturally have slight pitch variations.
+                </p>
+                <p style="margin-top: 15px;">
+                    <strong>Sound Design Tip:</strong> Layer multiple oscillators with different waveforms 
+                    and detuning to create complex, professional-sounding patches!
+                </p>
+            </div>
+
+            <div class="code-hint">
+                <h3>Key Concepts:</h3>
+                <ul>
+                    <li>Multiple <code>Tone.Oscillator</code> instances can run simultaneously</li>
+                    <li>Each oscillator has its own <code>.frequency</code> and <code>.detune</code></li>
+                    <li><code>.detune</code> value is in cents (100 cents = 1 semitone)</li>
+                    <li>Individual gain nodes allow independent volume control</li>
+                    <li>Chord intervals define the relationship between notes</li>
+                    <li>MIDI note numbers make frequency calculations easier</li>
+                </ul>
+            </div>
+
+            <div class="signal-flow">
+                <div class="signal-node">Oscillator 1 (Root)</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Gain 1</div>
+                <div class="signal-arrow" style="writing-mode: vertical-lr;">↓</div>
+                <div class="signal-node">Oscillator 2 (Third)</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Gain 2</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Master Gain</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Destination</div>
+                <div class="signal-arrow" style="writing-mode: vertical-lr;">↑</div>
+                <div class="signal-node">Oscillator 3 (Fifth)</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Gain 3</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Tone.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
+    
+    <!-- Our JavaScript -->
+    <script src="script.js"></script>
+    
+    <script>
+        // Show sections after audio starts
+        document.getElementById('startAudioBtn').addEventListener('click', () => {
+            setTimeout(() => {
+                document.getElementById('mixerSection').style.display = 'block';
+                document.getElementById('detuneSection').style.display = 'block';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

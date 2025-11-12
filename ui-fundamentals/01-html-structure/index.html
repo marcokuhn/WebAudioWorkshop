@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Structure Basics - UI Fundamentals</title>
+    <style>
+        /* Minimal styling to show structure */
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        header, main, footer, section, article {
+            border: 2px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        header { background-color: #e3f2fd; }
+        main { background-color: #f5f5f5; }
+        section { background-color: #fff3e0; }
+        article { background-color: #f3e5f5; }
+        footer { background-color: #e8f5e9; }
+        
+        .container {
+            border: 2px dashed #999;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: white;
+        }
+        
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .highlight {
+            background-color: yellow;
+            padding: 2px 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER: Top of the page, typically contains logo, navigation, title -->
+    <header>
+        <h1>HTML Structure Basics</h1>
+        <p>Understanding the fundamental building blocks of web pages</p>
+        <nav>
+            <a href="#semantic">Semantic HTML</a> | 
+            <a href="#containers">Containers</a> | 
+            <a href="#forms">Forms</a>
+        </nav>
+    </header>
+
+    <!-- MAIN: Primary content of the page -->
+    <main>
+        <h2>What is HTML?</h2>
+        <p>
+            <strong>HTML (HyperText Markup Language)</strong> is the standard language for creating web pages. 
+            It uses <code>&lt;tags&gt;</code> to structure content.
+        </p>
+
+        <!-- SECTION: A thematic grouping of content -->
+        <section id="semantic">
+            <h2>Semantic HTML Elements</h2>
+            <p>
+                Semantic elements clearly describe their meaning to both the browser and the developer.
+            </p>
+            
+            <!-- ARTICLE: Self-contained composition -->
+            <article>
+                <h3>Why Use Semantic HTML?</h3>
+                <ul>
+                    <li><strong>Accessibility:</strong> Screen readers understand the structure</li>
+                    <li><strong>SEO:</strong> Search engines better understand your content</li>
+                    <li><strong>Maintainability:</strong> Code is easier to read and understand</li>
+                    <li><strong>Consistency:</strong> Standard structure across projects</li>
+                </ul>
+            </article>
+
+            <article>
+                <h3>Common Semantic Elements</h3>
+                <dl>
+                    <dt><code>&lt;header&gt;</code></dt>
+                    <dd>Introductory content or navigation</dd>
+                    
+                    <dt><code>&lt;nav&gt;</code></dt>
+                    <dd>Navigation links</dd>
+                    
+                    <dt><code>&lt;main&gt;</code></dt>
+                    <dd>Main content of the document</dd>
+                    
+                    <dt><code>&lt;section&gt;</code></dt>
+                    <dd>Thematic grouping of content</dd>
+                    
+                    <dt><code>&lt;article&gt;</code></dt>
+                    <dd>Self-contained composition</dd>
+                    
+                    <dt><code>&lt;aside&gt;</code></dt>
+                    <dd>Content aside from the main content</dd>
+                    
+                    <dt><code>&lt;footer&gt;</code></dt>
+                    <dd>Footer information</dd>
+                </dl>
+            </article>
+        </section>
+
+        <section id="containers">
+            <h2>Container Elements</h2>
+            <p>
+                Containers are used to group and organize content. The most common are 
+                <code>&lt;div&gt;</code> (block-level) and <code>&lt;span&gt;</code> (inline).
+            </p>
+
+            <div class="container">
+                <h3>DIV Example</h3>
+                <p>
+                    A <code>&lt;div&gt;</code> is a <span class="highlight">block-level</span> container. 
+                    It takes up the full width available and starts on a new line.
+                </p>
+                <p>
+                    This is another paragraph inside the same div. Notice how each paragraph 
+                    is on its own line.
+                </p>
+            </div>
+
+            <p>
+                A <code>&lt;span&gt;</code> is an <span class="highlight">inline</span> container. 
+                It only takes up as much width as necessary and <span style="background-color: #ffeb3b;">doesn't break the flow</span> of text.
+            </p>
+
+            <div class="container">
+                <h3>Nested Containers</h3>
+                <div style="background-color: #e1f5fe; padding: 10px; margin: 5px;">
+                    <p>This is a div inside another div (nested)</p>
+                    <div style="background-color: #b3e5fc; padding: 10px; margin: 5px;">
+                        <p>This is nested even deeper!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="forms">
+            <h2>Form Elements for Audio Controls</h2>
+            <p>
+                Forms and input elements are essential for interactive audio applications. 
+                Here are the most common types:
+            </p>
+
+            <div class="container">
+                <h3>Interactive Elements</h3>
+                
+                <!-- BUTTON -->
+                <div style="margin: 20px 0;">
+                    <h4>Button</h4>
+                    <button id="demoBtn" onclick="alert('Button clicked!')">Click Me</button>
+                    <code>&lt;button&gt;Click Me&lt;/button&gt;</code>
+                </div>
+
+                <!-- RANGE SLIDER -->
+                <div style="margin: 20px 0;">
+                    <h4>Range Slider (for frequency, volume, etc.)</h4>
+                    <label for="rangeSlider">Frequency:</label>
+                    <input type="range" id="rangeSlider" min="20" max="2000" value="440">
+                    <span id="rangeValue">440 Hz</span>
+                    <br>
+                    <code>&lt;input type="range" min="20" max="2000" value="440"&gt;</code>
+                </div>
+
+                <!-- NUMBER INPUT -->
+                <div style="margin: 20px 0;">
+                    <h4>Number Input</h4>
+                    <label for="numInput">BPM:</label>
+                    <input type="number" id="numInput" min="60" max="200" value="120">
+                    <br>
+                    <code>&lt;input type="number" min="60" max="200" value="120"&gt;</code>
+                </div>
+
+                <!-- SELECT DROPDOWN -->
+                <div style="margin: 20px 0;">
+                    <h4>Select Dropdown (for waveform selection, etc.)</h4>
+                    <label for="waveSelect">Waveform:</label>
+                    <select id="waveSelect">
+                        <option value="sine">Sine</option>
+                        <option value="square">Square</option>
+                        <option value="triangle">Triangle</option>
+                        <option value="sawtooth">Sawtooth</option>
+                    </select>
+                    <br>
+                    <code>&lt;select&gt;&lt;option&gt;...&lt;/option&gt;&lt;/select&gt;</code>
+                </div>
+
+                <!-- CHECKBOX -->
+                <div style="margin: 20px 0;">
+                    <h4>Checkbox (for on/off toggles)</h4>
+                    <input type="checkbox" id="muteCheck">
+                    <label for="muteCheck">Mute Audio</label>
+                    <br>
+                    <code>&lt;input type="checkbox" id="muteCheck"&gt;</code>
+                </div>
+
+                <!-- RADIO BUTTONS -->
+                <div style="margin: 20px 0;">
+                    <h4>Radio Buttons (for exclusive choices)</h4>
+                    <input type="radio" id="mono" name="channels" value="mono" checked>
+                    <label for="mono">Mono</label>
+                    <input type="radio" id="stereo" name="channels" value="stereo">
+                    <label for="stereo">Stereo</label>
+                    <br>
+                    <code>&lt;input type="radio" name="channels"&gt;</code>
+                </div>
+
+                <!-- TEXT INPUT -->
+                <div style="margin: 20px 0;">
+                    <h4>Text Input</h4>
+                    <label for="textInput">Preset Name:</label>
+                    <input type="text" id="textInput" placeholder="Enter preset name...">
+                    <br>
+                    <code>&lt;input type="text" placeholder="..."&gt;</code>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>HTML Attributes</h2>
+            <p>Attributes provide additional information about HTML elements:</p>
+            
+            <div class="container">
+                <h3>Common Attributes</h3>
+                <ul>
+                    <li><code>id</code> - Unique identifier (e.g., <code>id="playButton"</code>)</li>
+                    <li><code>class</code> - One or more class names for styling (e.g., <code>class="btn primary"</code>)</li>
+                    <li><code>style</code> - Inline CSS styling (e.g., <code>style="color: red;"</code>)</li>
+                    <li><code>data-*</code> - Custom data attributes (e.g., <code>data-frequency="440"</code>)</li>
+                    <li><code>onclick</code> - JavaScript event handler</li>
+                    <li><code>disabled</code> - Disables an element</li>
+                    <li><code>placeholder</code> - Hint text for inputs</li>
+                </ul>
+
+                <h4>Example with Multiple Attributes:</h4>
+                <button 
+                    id="audioBtn" 
+                    class="btn primary" 
+                    data-frequency="440"
+                    style="padding: 10px 20px; background-color: #667eea; color: white; border: none; border-radius: 5px;">
+                    Play A440
+                </button>
+                <br><br>
+                <code style="display: block; white-space: pre;">
+&lt;button 
+    id="audioBtn" 
+    class="btn primary" 
+    data-frequency="440"
+    style="..."&gt;
+    Play A440
+&lt;/button&gt;
+                </code>
+            </div>
+        </section>
+
+        <section>
+            <h2>Text Formatting Elements</h2>
+            <div class="container">
+                <p>This is <strong>bold text</strong> (important)</p>
+                <p>This is <em>italic text</em> (emphasized)</p>
+                <p>This is <mark>highlighted text</mark></p>
+                <p>This is <small>small text</small></p>
+                <p>This is <del>deleted text</del> and <ins>inserted text</ins></p>
+                <p>This is <sub>subscript</sub> and <sup>superscript</sup></p>
+                <p>This is <code>inline code</code></p>
+                <p>This is <kbd>keyboard input</kbd></p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Lists</h2>
+            <div class="container">
+                <h3>Unordered List (bullets)</h3>
+                <ul>
+                    <li>First item</li>
+                    <li>Second item</li>
+                    <li>Third item</li>
+                </ul>
+
+                <h3>Ordered List (numbers)</h3>
+                <ol>
+                    <li>First step</li>
+                    <li>Second step</li>
+                    <li>Third step</li>
+                </ol>
+
+                <h3>Definition List (term and definition)</h3>
+                <dl>
+                    <dt>Frequency</dt>
+                    <dd>The rate of oscillation measured in Hertz (Hz)</dd>
+                    <dt>Amplitude</dt>
+                    <dd>The strength or volume of a sound wave</dd>
+                </dl>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER: Bottom of the page, typically contains copyright, links, etc. -->
+    <footer>
+        <h2>Key Takeaways</h2>
+        <ul>
+            <li>HTML provides the structure of web pages using tags</li>
+            <li>Semantic elements (<code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;footer&gt;</code>) improve accessibility and SEO</li>
+            <li>Containers (<code>&lt;div&gt;</code>, <code>&lt;span&gt;</code>) group and organize content</li>
+            <li>Form elements (<code>&lt;input&gt;</code>, <code>&lt;button&gt;</code>, <code>&lt;select&gt;</code>) enable interactivity</li>
+            <li>Attributes provide additional information and functionality</li>
+        </ul>
+        <p style="margin-top: 20px;">
+            <strong>Next:</strong> Learn how to style these elements with CSS in 
+            <a href="../02-css-basics/index.html">02-css-basics</a>
+        </p>
+    </footer>
+
+    <script>
+        // Interactive demonstrations
+        const rangeSlider = document.getElementById('rangeSlider');
+        const rangeValue = document.getElementById('rangeValue');
+        
+        rangeSlider.addEventListener('input', function() {
+            rangeValue.textContent = this.value + ' Hz';
+        });
+
+        // Demonstrate getting values from inputs
+        console.log('Page loaded! Try interacting with the controls.');
+        console.log('Open DevTools (F12) to see console messages when you interact.');
+
+        document.getElementById('demoBtn').addEventListener('click', function() {
+            console.log('Button clicked!');
+        });
+
+        document.getElementById('waveSelect').addEventListener('change', function() {
+            console.log('Waveform selected:', this.value);
+        });
+
+        document.getElementById('muteCheck').addEventListener('change', function() {
+            console.log('Mute:', this.checked);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample with Effects - Web Audio Workshop</title>
+    <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎚️ Sample Playback + Audio Effects</h1>
+            <p class="description">
+                Process audio samples with multiple effects! Learn how to chain filter, delay, and reverb 
+                to create interesting sonic textures and spaces.
+            </p>
+        </header>
+        
+        <main class="controls">
+            <!-- Start Audio Context Button -->
+            <div class="control-group">
+                <h3>Audio Engine</h3>
+                <button class="btn btn-success" id="startAudioBtn">🎵 Start Audio Engine</button>
+                <div class="status status-warning" id="statusMessage">
+                    Click "Start Audio Engine" to enable sound
+                </div>
+            </div>
+
+            <!-- Load Sample -->
+            <div class="control-group" id="controlsSection" style="display: none;">
+                <h3>Load Audio Sample</h3>
+                
+                <div class="control-row">
+                    <button class="btn btn-primary" id="loadSampleBtn">📁 Load Example Sample</button>
+                </div>
+
+                <div style="margin: 20px 0; text-align: center;">
+                    <strong>- OR -</strong>
+                </div>
+
+                <div class="control-row">
+                    <input type="file" id="fileInput" accept="audio/*">
+                </div>
+
+                <div id="sampleInfo" class="status status-info">
+                    No sample loaded yet
+                </div>
+            </div>
+
+            <!-- Playback Controls -->
+            <div class="control-group" id="playbackSection" style="display: none;">
+                <h3>Playback Controls</h3>
+                
+                <div class="control-row">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="playBtn" disabled>▶️ Play</button>
+                        <button class="btn btn-danger" id="stopBtn" disabled>⏹️ Stop</button>
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Loop</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="loopToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Volume</span>
+                    <div class="control-input">
+                        <input type="range" id="volumeSlider" min="0" max="100" value="30" step="1">
+                    </div>
+                    <span class="value-display" id="volumeValue">30%</span>
+                </div>
+            </div>
+
+            <!-- Filter Effects -->
+            <div class="control-group" id="filterSection" style="display: none;">
+                <h3>Filter Effect</h3>
+                
+                <div class="control-row">
+                    <span class="control-label">Filter On/Off</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="filterToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Cutoff Frequency</span>
+                    <div class="control-input">
+                        <input type="range" id="filterCutoffSlider" min="100" max="10000" value="5000" step="10">
+                    </div>
+                    <span class="value-display" id="filterCutoffValue">5000 Hz</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Resonance (Q)</span>
+                    <div class="control-input">
+                        <input type="range" id="filterResonanceSlider" min="0.1" max="20" value="1" step="0.1">
+                    </div>
+                    <span class="value-display" id="filterResonanceValue">1.0</span>
+                </div>
+            </div>
+
+            <!-- Delay Effect -->
+            <div class="control-group" id="delaySection" style="display: none;">
+                <h3>Delay Effect</h3>
+                
+                <div class="control-row">
+                    <span class="control-label">Delay On/Off</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="delayToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Delay Time</span>
+                    <div class="control-input">
+                        <input type="range" id="delayTimeSlider" min="0.01" max="1" value="0.25" step="0.01">
+                    </div>
+                    <span class="value-display" id="delayTimeValue">0.25s</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Feedback</span>
+                    <div class="control-input">
+                        <input type="range" id="delayFeedbackSlider" min="0" max="0.9" value="0.3" step="0.05">
+                    </div>
+                    <span class="value-display" id="delayFeedbackValue">30%</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Wet/Dry Mix</span>
+                    <div class="control-input">
+                        <input type="range" id="delayWetSlider" min="0" max="1" value="0.2" step="0.05">
+                    </div>
+                    <span class="value-display" id="delayWetValue">20%</span>
+                </div>
+            </div>
+
+            <!-- Reverb Effect -->
+            <div class="control-group" id="reverbSection" style="display: none;">
+                <h3>Reverb Effect</h3>
+                
+                <div class="control-row">
+                    <span class="control-label">Reverb On/Off</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="reverbToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Decay Time</span>
+                    <div class="control-input">
+                        <input type="range" id="reverbDecaySlider" min="0.1" max="10" value="2" step="0.1">
+                    </div>
+                    <span class="value-display" id="reverbDecayValue">2.0s</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Wet/Dry Mix</span>
+                    <div class="control-input">
+                        <input type="range" id="reverbWetSlider" min="0" max="1" value="0.3" step="0.05">
+                    </div>
+                    <span class="value-display" id="reverbWetValue">30%</span>
+                </div>
+
+                <div class="status status-info">
+                    <strong>Pro Tip:</strong> Try combining effects! Start with a bit of filter, 
+                    add some delay, then reverb for a spacious sound.
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="info-box">
+                <h3>What's happening?</h3>
+                <p>
+                    We're processing an audio sample through a <strong>chain of effects</strong>. Each effect 
+                    transforms the sound in different ways:
+                </p>
+                <p style="margin-top: 15px;">
+                    <strong>Signal Flow:</strong> Sample → Filter → Delay → Reverb → Volume → Speakers
+                </p>
+                <p style="margin-top: 15px;">
+                    <strong>Effects Explained:</strong>
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li><strong>Filter:</strong> Removes or emphasizes certain frequencies (like EQ)</li>
+                    <li><strong>Delay:</strong> Creates echoes by repeating the sound after a time interval</li>
+                    <li><strong>Reverb:</strong> Simulates acoustic space (room, hall, cathedral)</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    <strong>Wet/Dry Mix:</strong> Controls how much effect is blended with the original signal.
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li><strong>0% (Dry):</strong> Only original sound, no effect</li>
+                    <li><strong>50%:</strong> Equal mix of original and effected sound</li>
+                    <li><strong>100% (Wet):</strong> Only effected sound</li>
+                </ul>
+            </div>
+
+            <div class="code-hint">
+                <h3>Key Concepts:</h3>
+                <ul>
+                    <li><code>Tone.Filter</code> shapes frequency content</li>
+                    <li><code>Tone.FeedbackDelay</code> creates echo effects with feedback</li>
+                    <li><code>Tone.Reverb</code> simulates acoustic spaces</li>
+                    <li><code>.wet</code> controls dry/wet mix (0 = dry, 1 = wet)</li>
+                    <li>Effects are chained using <code>.connect()</code></li>
+                    <li>Effects can be bypassed by toggling wet/dry or reconnecting</li>
+                </ul>
+            </div>
+
+            <div class="signal-flow">
+                <div class="signal-node">Sample Player</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Filter</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Delay</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Reverb</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Gain</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Destination</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Tone.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
+    
+    <!-- Our JavaScript -->
+    <script src="script.js"></script>
+    
+    <script>
+        // Show effect sections after audio starts
+        document.getElementById('startAudioBtn').addEventListener('click', () => {
+            setTimeout(() => {
+                document.getElementById('playbackSection').style.display = 'block';
+                document.getElementById('filterSection').style.display = 'block';
+                document.getElementById('delaySection').style.display = 'block';
+                document.getElementById('reverbSection').style.display = 'block';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

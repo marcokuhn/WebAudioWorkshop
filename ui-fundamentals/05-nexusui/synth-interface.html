@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusUI Synthesizer - Complete Example</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 20px;
+            min-height: 100vh;
+            color: white;
+        }
+
+        .synth-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .synth-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #444;
+        }
+
+        .synth-header h1 {
+            font-size: 36px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .synth-header p {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .status-message {
+            background: #ff9800;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .status-message.ready {
+            background: #4caf50;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .control-row {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .control-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .control-item label {
+            color: #aaa;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .value-display {
+            background: rgba(102, 126, 234, 0.2);
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #667eea;
+            min-width: 80px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .transport-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .keyboard-section {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .waveform-selector {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .info-panel {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-panel h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .info-panel p {
+            color: #aaa;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #888;
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="synth-container">
+        <div class="synth-header">
+            <h1>🎹 NexusUI Synthesizer</h1>
+            <p>Complete integration with Tone.js</p>
+        </div>
+
+        <div class="status-message" id="statusMessage">
+            Click "Start Audio" to begin
+        </div>
+
+        <!-- START BUTTON -->
+        <div class="transport-controls">
+            <div id="startBtn"></div>
+        </div>
+
+        <!-- OSCILLATOR SECTION -->
+        <div class="section" id="controlsSection" style="display: none;">
+            <h2>🌊 Oscillator</h2>
+            
+            <div class="waveform-selector">
+                <div id="waveformSelect"></div>
+            </div>
+
+            <div class="control-row">
+                <div class="control-item">
+                    <label>Frequency</label>
+                    <div id="frequencyDial"></div>
+                    <div class="value-display" id="frequencyValue">440 Hz</div>
+                </div>
+
+                <div class="control-item">
+                    <label>Detune</label>
+                    <div id="detuneDial"></div>
+                    <div class="value-display" id="detuneValue">0 cents</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FILTER SECTION -->
+        <div class="section" style="display: none;" id="filterSection">
+            <h2>🎚️ Filter</h2>
+            
+            <div class="control-row">
+                <div class="control-item">
+                    <label>Cutoff</label>
+                    <div id="filterCutoffDial"></div>
+                    <div class="value-display" id="cutoffValue">2000 Hz</div>
+                </div>
+
+                <div class="control-item">
+                    <label>Resonance (Q)</label>
+                    <div id="filterQDial"></div>
+                    <div class="value-display" id="qValue">1.0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ENVELOPE SECTION -->
+        <div class="section" style="display: none;" id="envelopeSection">
+            <h2>📊 Amplitude Envelope (ADSR)</h2>
+            
+            <div class="control-row">
+                <div class="control-item">
+                    <label>Attack</label>
+                    <div id="attackSlider"></div>
+                    <div class="value-display" id="attackValue">0.1s</div>
+                </div>
+
+                <div class="control-item">
+                    <label>Decay</label>
+                    <div id="decaySlider"></div>
+                    <div class="value-display" id="decayValue">0.2s</div>
+                </div>
+
+                <div class="control-item">
+                    <label>Sustain</label>
+                    <div id="sustainSlider"></div>
+                    <div class="value-display" id="sustainValue">0.5</div>
+                </div>
+
+                <div class="control-item">
+                    <label>Release</label>
+                    <div id="releaseSlider"></div>
+                    <div class="value-display" id="releaseValue">0.8s</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VOLUME SECTION -->
+        <div class="section" style="display: none;" id="volumeSection">
+            <h2>🔊 Volume</h2>
+            
+            <div class="control-row">
+                <div class="control-item">
+                    <label>Master Volume</label>
+                    <div id="volumeSlider"></div>
+                    <div class="value-display" id="volumeValue">-12 dB</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KEYBOARD -->
+        <div class="section" style="display: none;" id="keyboardSection">
+            <h2>🎹 Keyboard</h2>
+            <div class="keyboard-section">
+                <div id="keyboard"></div>
+            </div>
+            <div class="info-panel">
+                <h3>How to Play:</h3>
+                <p>
+                    Click or touch the keys to play notes. The synth uses all the parameters 
+                    you've set above (waveform, filter, envelope, volume). Try adjusting the 
+                    controls while playing to hear the changes in real-time!
+                </p>
+            </div>
+        </div>
+
+        <footer>
+            <p>
+                Built with <a href="https://tonejs.github.io/" target="_blank">Tone.js</a> and 
+                <a href="https://nexus-js.github.io/ui/" target="_blank">NexusUI</a>
+            </p>
+            <p style="margin-top: 10px;">
+                <a href="basic-example.html">← Back to NexusUI Basics</a> | 
+                <a href="../README.md">UI Fundamentals Home</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/nexusui@latest/dist/NexusUI.js"></script>
+
+    <!-- Our Code -->
+    <script>
+        // Global variables
+        let synth;
+        let filter;
+        let audioStarted = false;
+
+        // Customize NexusUI colors
+        Nexus.colors.accent = '#667eea';
+        Nexus.colors.fill = '#764ba2';
+
+        // Start Button
+        const startBtn = new Nexus.Button('#startBtn', {
+            size: [150, 50],
+            mode: 'aftertouch',
+            state: false
+        });
+
+        startBtn.on('change', async function(state) {
+            if (state && !audioStarted) {
+                await Tone.start();
+                initAudio();
+                audioStarted = true;
+                
+                document.getElementById('statusMessage').textContent = 'Audio Engine Ready!';
+                document.getElementById('statusMessage').className = 'status-message ready';
+                
+                // Show all sections
+                document.getElementById('controlsSection').style.display = 'block';
+                document.getElementById('filterSection').style.display = 'block';
+                document.getElementById('envelopeSection').style.display = 'block';
+                document.getElementById('volumeSection').style.display = 'block';
+                document.getElementById('keyboardSection').style.display = 'block';
+                
+                startBtn.text = 'Audio Started ✓';
+            }
+        });
+
+        function initAudio() {
+            // Create filter
+            filter = new Tone.Filter({
+                frequency: 2000,
+                type: 'lowpass',
+                Q: 1
+            });
+
+            // Create synth with filter
+            synth = new Tone.Synth({
+                oscillator: {
+                    type: 'sine'
+                },
+                envelope: {
+                    attack: 0.1,
+                    decay: 0.2,
+                    sustain: 0.5,
+                    release: 0.8
+                },
+                volume: -12
+            }).chain(filter, Tone.Destination);
+
+            initControls();
+            console.log('Audio initialized!');
+        }
+
+        function initControls() {
+            // Waveform Select
+            const waveformSelect = new Nexus.Select('#waveformSelect', {
+                size: [200, 40],
+                options: ['sine', 'square', 'triangle', 'sawtooth']
+            });
+
+            waveformSelect.on('change', function(v) {
+                synth.oscillator.type = v.value;
+            });
+
+            // Frequency Dial
+            const frequencyDial = new Nexus.Dial('#frequencyDial', {
+                size: [100, 100],
+                min: 20,
+                max: 2000,
+                value: 440
+            });
+
+            frequencyDial.on('change', function(value) {
+                synth.frequency.rampTo(value, 0.1);
+                document.getElementById('frequencyValue').textContent = 
+                    Math.round(value) + ' Hz';
+            });
+
+            // Detune Dial
+            const detuneDial = new Nexus.Dial('#detuneDial', {
+                size: [100, 100],
+                min: -100,
+                max: 100,
+                value: 0
+            });
+
+            detuneDial.on('change', function(value) {
+                synth.detune.rampTo(value, 0.1);
+                document.getElementById('detuneValue').textContent = 
+                    Math.round(value) + ' cents';
+            });
+
+            // Filter Cutoff
+            const filterCutoffDial = new Nexus.Dial('#filterCutoffDial', {
+                size: [100, 100],
+                min: 20,
+                max: 20000,
+                value: 2000
+            });
+
+            filterCutoffDial.on('change', function(value) {
+                filter.frequency.rampTo(value, 0.1);
+                document.getElementById('cutoffValue').textContent = 
+                    Math.round(value) + ' Hz';
+            });
+
+            // Filter Q (Resonance)
+            const filterQDial = new Nexus.Dial('#filterQDial', {
+                size: [100, 100],
+                min: 0.1,
+                max: 30,
+                value: 1
+            });
+
+            filterQDial.on('change', function(value) {
+                filter.Q.rampTo(value, 0.1);
+                document.getElementById('qValue').textContent = value.toFixed(1);
+            });
+
+            // ADSR Sliders
+            const attackSlider = new Nexus.Slider('#attackSlider', {
+                size: [40, 120],
+                min: 0.001,
+                max: 2,
+                value: 0.1
+            });
+
+            attackSlider.on('change', function(value) {
+                synth.envelope.attack = value;
+                document.getElementById('attackValue').textContent = 
+                    value.toFixed(2) + 's';
+            });
+
+            const decaySlider = new Nexus.Slider('#decaySlider', {
+                size: [40, 120],
+                min: 0.001,
+                max: 2,
+                value: 0.2
+            });
+
+            decaySlider.on('change', function(value) {
+                synth.envelope.decay = value;
+                document.getElementById('decayValue').textContent = 
+                    value.toFixed(2) + 's';
+            });
+
+            const sustainSlider = new Nexus.Slider('#sustainSlider', {
+                size: [40, 120],
+                min: 0,
+                max: 1,
+                value: 0.5
+            });
+
+            sustainSlider.on('change', function(value) {
+                synth.envelope.sustain = value;
+                document.getElementById('sustainValue').textContent = 
+                    value.toFixed(2);
+            });
+
+            const releaseSlider = new Nexus.Slider('#releaseSlider', {
+                size: [40, 120],
+                min: 0.001,
+                max: 5,
+                value: 0.8
+            });
+
+            releaseSlider.on('change', function(value) {
+                synth.envelope.release = value;
+                document.getElementById('releaseValue').textContent = 
+                    value.toFixed(2) + 's';
+            });
+
+            // Volume Slider
+            const volumeSlider = new Nexus.Slider('#volumeSlider', {
+                size: [300, 40],
+                min: -60,
+                max: 0,
+                value: -12
+            });
+
+            volumeSlider.on('change', function(value) {
+                synth.volume.rampTo(value, 0.1);
+                document.getElementById('volumeValue').textContent = 
+                    value.toFixed(1) + ' dB';
+            });
+
+            // Piano Keyboard
+            const keyboard = new Nexus.Piano('#keyboard', {
+                size: [700, 120],
+                mode: 'button',
+                lowNote: 48,  // C3
+                highNote: 72  // C5
+            });
+
+            keyboard.on('change', function(v) {
+                if (v.state) {
+                    // Note on - convert MIDI note to frequency
+                    const freq = Tone.Frequency(v.note, 'midi').toFrequency();
+                    synth.triggerAttack(freq);
+                } else {
+                    // Note off
+                    synth.triggerRelease();
+                }
+            });
+        }
+
+        console.log('NexusUI Synthesizer loaded! Click "Start Audio" to begin.');
+    </script>
+</body>
+</html>

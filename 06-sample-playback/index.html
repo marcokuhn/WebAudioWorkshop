@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Playback - Web Audio Workshop</title>
+    <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+    <style>
+        #progressBar {
+            width: 100%;
+            height: 30px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #ddd;
+            border-radius: 15px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        #progressBar::-webkit-progress-bar {
+            background: #ddd;
+            border-radius: 15px;
+        }
+        
+        #progressBar::-webkit-progress-value {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+        }
+        
+        #progressBar::-moz-progress-bar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+        }
+        
+        .file-upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload-area:hover {
+            background: #e9ecef;
+            border-color: #764ba2;
+        }
+        
+        .file-upload-area input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎵 Sample Playback</h1>
+            <p class="description">
+                Learn how to load and play audio files! This is essential for working with recordings,
+                loops, and sound effects in your Web Audio projects.
+            </p>
+        </header>
+        
+        <main class="controls">
+            <!-- Start Audio Context Button -->
+            <div class="control-group">
+                <h3>Audio Engine</h3>
+                <button class="btn btn-success" id="startAudioBtn">🎵 Start Audio Engine</button>
+                <div class="status status-warning" id="statusMessage">
+                    Click "Start Audio Engine" to enable sound
+                </div>
+            </div>
+
+            <!-- Load Sample -->
+            <div class="control-group" id="controlsSection" style="display: none;">
+                <h3>Load Audio Sample</h3>
+                
+                <div class="control-row">
+                    <button class="btn btn-primary" id="loadSampleBtn">📁 Load Example Sample</button>
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <strong>- OR -</strong>
+                </div>
+
+                <label for="fileInput" class="file-upload-area">
+                    <div style="font-size: 3em; margin-bottom: 10px;">📤</div>
+                    <div style="font-size: 1.2em; font-weight: 600; margin-bottom: 10px;">
+                        Click to Upload Your Own Audio File
+                    </div>
+                    <div style="color: #666;">
+                        Supports WAV, MP3, OGG, and other common audio formats
+                    </div>
+                    <input type="file" id="fileInput" accept="audio/*">
+                </label>
+
+                <div id="sampleInfo" class="status status-info" style="margin-top: 20px;">
+                    No sample loaded yet
+                </div>
+            </div>
+
+            <!-- Playback Controls -->
+            <div class="control-group" id="playbackSection" style="display: none;">
+                <h3>Playback Controls</h3>
+                
+                <div class="control-row">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="playBtn" disabled>▶️ Play</button>
+                        <button class="btn btn-danger" id="stopBtn" disabled>⏹️ Stop</button>
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Loop</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="loopToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <!-- Progress Bar -->
+                <div style="margin: 20px 0;">
+                    <progress id="progressBar" value="0" max="100"></progress>
+                    <div id="timeDisplay" style="text-align: center; margin-top: 10px; font-size: 1.1em; font-weight: 600; color: #667eea;">
+                        0:00 / 0:00
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Playback Speed</span>
+                    <div class="control-input">
+                        <input type="range" id="playbackRateSlider" min="0.25" max="2" value="1" step="0.05">
+                    </div>
+                    <span class="value-display" id="playbackRateValue">1.00x</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Volume</span>
+                    <div class="control-input">
+                        <input type="range" id="volumeSlider" min="0" max="100" value="30" step="1">
+                    </div>
+                    <span class="value-display" id="volumeValue">30%</span>
+                </div>
+
+                <div class="status status-info">
+                    <strong>Tip:</strong> Click anywhere on the progress bar to jump to that position!
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="info-box">
+                <h3>What's happening?</h3>
+                <p>
+                    The <strong>Tone.Player</strong> loads and plays audio files. This is different from 
+                    synthesizing sound with oscillators - instead, we're playing back pre-recorded audio.
+                </p>
+                <p style="margin-top: 15px;">
+                    <strong>Key Features:</strong>
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li><strong>Loading:</strong> Audio files are loaded into memory as buffers</li>
+                    <li><strong>Playback:</strong> Can play, pause, stop, and seek through the audio</li>
+                    <li><strong>Looping:</strong> Audio can repeat continuously</li>
+                    <li><strong>Playback Rate:</strong> Speed up or slow down (also changes pitch!)</li>
+                    <li><strong>Volume:</strong> Control output level in decibels or percentage</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    <strong>Use Cases:</strong>
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li>Playing drum loops and musical phrases</li>
+                    <li>Triggering sound effects (footsteps, UI sounds, etc.)</li>
+                    <li>Background music playback</li>
+                    <li>Sample-based instruments (like a sampler or drum machine)</li>
+                </ul>
+            </div>
+
+            <div class="code-hint">
+                <h3>Key Concepts:</h3>
+                <ul>
+                    <li><code>Tone.Player</code> loads and plays audio files</li>
+                    <li><code>.start()</code> begins playback from current position</li>
+                    <li><code>.stop()</code> stops playback</li>
+                    <li><code>.seek(time)</code> jumps to a specific time in the audio</li>
+                    <li><code>.loop = true</code> enables continuous looping</li>
+                    <li><code>.playbackRate</code> changes speed (and pitch) of playback</li>
+                    <li><code>.buffer</code> contains the loaded audio data</li>
+                </ul>
+            </div>
+
+            <div class="signal-flow">
+                <div class="signal-node">Audio File</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Player (Buffer)</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Destination</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Tone.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
+    
+    <!-- Our JavaScript -->
+    <script src="script.js"></script>
+    
+    <script>
+        // Show playback controls after audio starts
+        document.getElementById('startAudioBtn').addEventListener('click', () => {
+            setTimeout(() => {
+                document.getElementById('playbackSection').style.display = 'block';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

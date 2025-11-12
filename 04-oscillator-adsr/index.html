@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oscillator + ADSR Envelope - Web Audio Workshop</title>
+    <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+    <style>
+        .trigger-btn-large {
+            font-size: 2em;
+            padding: 40px 60px;
+            margin: 20px auto;
+            display: block;
+            border-radius: 20px;
+            transition: all 0.1s ease;
+        }
+        
+        .trigger-btn-large.active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.5) inset;
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Oscillator + ADSR Envelope</h1>
+            <p class="description">
+                Learn about envelopes! An ADSR envelope shapes the volume of a sound over time, 
+                giving each note a natural attack, decay, sustain, and release. This is how synthesizers 
+                create expressive, dynamic sounds.
+            </p>
+        </header>
+        
+        <main class="controls">
+            <!-- Start Audio Context Button -->
+            <div class="control-group">
+                <h3>Audio Engine</h3>
+                <button class="btn btn-success" id="startAudioBtn">🎵 Start Audio Engine</button>
+                <div class="status status-warning" id="statusMessage">
+                    Click "Start Audio Engine" to enable sound
+                </div>
+            </div>
+
+            <!-- Trigger Button -->
+            <div class="control-group" id="controlsSection" style="display: none;">
+                <h3>Trigger Note</h3>
+                
+                <button class="btn btn-primary trigger-btn-large" id="triggerBtn">
+                    🎹 Press and Hold to Play Note
+                </button>
+                
+                <div class="status status-info">
+                    <strong>How to use:</strong> Click and HOLD the button to trigger the note. 
+                    Release to stop. You can also use the SPACEBAR on your keyboard!
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Frequency</span>
+                    <div class="control-input">
+                        <input type="range" id="frequencySlider" min="100" max="1000" value="440" step="1">
+                    </div>
+                    <span class="value-display" id="frequencyValue">440 Hz</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Waveform</span>
+                    <div class="control-input">
+                        <select id="waveformSelect">
+                            <option value="sine">Sine</option>
+                            <option value="square">Square</option>
+                            <option value="sawtooth" selected>Sawtooth</option>
+                            <option value="triangle">Triangle</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADSR Controls -->
+            <div class="control-group" id="adsrSection" style="display: none;">
+                <h3>ADSR Envelope Settings</h3>
+                
+                <div class="control-row">
+                    <span class="control-label">Attack Time</span>
+                    <div class="control-input">
+                        <input type="range" id="attackSlider" min="0.01" max="2" value="0.1" step="0.01">
+                    </div>
+                    <span class="value-display" id="attackValue">0.10s</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Decay Time</span>
+                    <div class="control-input">
+                        <input type="range" id="decaySlider" min="0.01" max="2" value="0.2" step="0.01">
+                    </div>
+                    <span class="value-display" id="decayValue">0.20s</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Sustain Level</span>
+                    <div class="control-input">
+                        <input type="range" id="sustainSlider" min="0" max="1" value="0.5" step="0.01">
+                    </div>
+                    <span class="value-display" id="sustainValue">50%</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Release Time</span>
+                    <div class="control-input">
+                        <input type="range" id="releaseSlider" min="0.01" max="3" value="0.5" step="0.01">
+                    </div>
+                    <span class="value-display" id="releaseValue">0.50s</span>
+                </div>
+
+                <!-- Envelope Visualization -->
+                <div id="envelopeDisplay" style="margin-top: 20px; padding: 20px; background: white; border-radius: 12px; border: 2px solid #667eea;">
+                    <!-- JavaScript will populate this -->
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="info-box">
+                <h3>What's happening?</h3>
+                <p>
+                    An <strong>ADSR Envelope</strong> controls how the volume changes over time when you trigger a note.
+                    This is essential for creating expressive, natural-sounding instruments.
+                </p>
+                <p style="margin-top: 15px;">
+                    <strong>The Four Stages:</strong>
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li><strong>Attack (A):</strong> Time it takes to reach maximum volume from silence when you press a key</li>
+                    <li><strong>Decay (D):</strong> Time it takes to fall from maximum to the sustain level</li>
+                    <li><strong>Sustain (S):</strong> The volume level maintained while you hold the key (not a time!)</li>
+                    <li><strong>Release (R):</strong> Time it takes to fade to silence after you release the key</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    <strong>Examples:</strong>
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li><strong>Piano:</strong> Fast attack (0.01s), medium decay (0.2s), low sustain (30%), long release (1s)</li>
+                    <li><strong>Pad/String:</strong> Slow attack (0.5s), long decay (0.5s), high sustain (70%), long release (2s)</li>
+                    <li><strong>Pluck:</strong> Fast attack (0.01s), short decay (0.1s), no sustain (0%), short release (0.1s)</li>
+                </ul>
+            </div>
+
+            <div class="code-hint">
+                <h3>Key Concepts:</h3>
+                <ul>
+                    <li><code>Tone.AmplitudeEnvelope</code> creates an ADSR envelope for volume</li>
+                    <li><code>.triggerAttack()</code> starts the Attack → Decay → Sustain phases</li>
+                    <li><code>.triggerRelease()</code> starts the Release phase</li>
+                    <li>Attack, Decay, and Release are <strong>time values</strong> (in seconds)</li>
+                    <li>Sustain is a <strong>level value</strong> (0 to 1, or 0% to 100%)</li>
+                    <li>The oscillator runs continuously but is shaped by the envelope</li>
+                </ul>
+            </div>
+
+            <div class="signal-flow">
+                <div class="signal-node">Oscillator (Continuous)</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">ADSR Envelope (Shapes Volume)</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Destination</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Tone.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
+    
+    <!-- Our JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

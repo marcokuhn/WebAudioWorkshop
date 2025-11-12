@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexbox Layouts - UI Fundamentals</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>🎨 Flexbox Layout for Audio Interfaces</h1>
+        <p>Master responsive layouts with CSS Flexbox</p>
+    </header>
+
+    <main>
+        <!-- FLEXBOX BASICS -->
+        <section class="demo-section">
+            <h2>What is Flexbox?</h2>
+            <p>
+                Flexbox is a one-dimensional layout method for arranging items in rows or columns. 
+                It's perfect for creating responsive audio interfaces that adapt to different screen sizes.
+            </p>
+            
+            <div class="info-box">
+                <h3>Key Concepts:</h3>
+                <ul>
+                    <li><strong>Flex Container:</strong> The parent element with <code>display: flex</code></li>
+                    <li><strong>Flex Items:</strong> Direct children of the flex container</li>
+                    <li><strong>Main Axis:</strong> Primary direction (row or column)</li>
+                    <li><strong>Cross Axis:</strong> Perpendicular to the main axis</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- FLEX DIRECTION -->
+        <section class="demo-section">
+            <h2>Flex Direction</h2>
+            <p>Controls the direction of the main axis.</p>
+
+            <h3>flex-direction: row (default)</h3>
+            <div class="flex-container flex-row">
+                <div class="flex-item">1</div>
+                <div class="flex-item">2</div>
+                <div class="flex-item">3</div>
+                <div class="flex-item">4</div>
+            </div>
+
+            <h3>flex-direction: column</h3>
+            <div class="flex-container flex-column">
+                <div class="flex-item">1</div>
+                <div class="flex-item">2</div>
+                <div class="flex-item">3</div>
+                <div class="flex-item">4</div>
+            </div>
+
+            <code class="code-block">
+.container {
+    display: flex;
+    flex-direction: row;    /* row | column | row-reverse | column-reverse */
+}
+            </code>
+        </section>
+
+        <!-- JUSTIFY CONTENT -->
+        <section class="demo-section">
+            <h2>Justify Content (Main Axis Alignment)</h2>
+            <p>Aligns items along the main axis.</p>
+
+            <h3>justify-content: flex-start</h3>
+            <div class="flex-container justify-start">
+                <div class="flex-item">1</div>
+                <div class="flex-item">2</div>
+                <div class="flex-item">3</div>
+            </div>
+
+            <h3>justify-content: center</h3>
+            <div class="flex-container justify-center">
+                <div class="flex-item">1</div>
+                <div class="flex-item">2</div>
+                <div class="flex-item">3</div>
+            </div>
+
+            <h3>justify-content: flex-end</h3>
+            <div class="flex-container justify-end">
+                <div class="flex-item">1</div>
+                <div class="flex-item">2</div>
+                <div class="flex-item">3</div>
+            </div>
+
+            <h3>justify-content: space-between</h3>
+            <div class="flex-container justify-between">
+                <div class="flex-item">1</div>
+                <div class="flex-item">2</div>
+                <div class="flex-item">3</div>
+            </div>
+
+            <h3>justify-content: space-around</h3>
+            <div class="flex-container justify-around">
+                <div class="flex-item">1</div>
+                <div class="flex-item">2</div>
+                <div class="flex-item">3</div>
+            </div>
+
+            <h3>justify-content: space-evenly</h3>
+            <div class="flex-container justify-evenly">
+                <div class="flex-item">1</div>
+                <div class="flex-item">2</div>
+                <div class="flex-item">3</div>
+            </div>
+        </section>
+
+        <!-- ALIGN ITEMS -->
+        <section class="demo-section">
+            <h2>Align Items (Cross Axis Alignment)</h2>
+            <p>Aligns items along the cross axis.</p>
+
+            <h3>align-items: flex-start</h3>
+            <div class="flex-container tall align-start">
+                <div class="flex-item">1</div>
+                <div class="flex-item">2</div>
+                <div class="flex-item">3</div>
+            </div>
+
+            <h3>align-items: center</h3>
+            <div class="flex-container tall align-center">
+                <div class="flex-item">1</div>
+                <div class="flex-item">2</div>
+                <div class="flex-item">3</div>
+            </div>
+
+            <h3>align-items: flex-end</h3>
+            <div class="flex-container tall align-end">
+                <div class="flex-item">1</div>
+                <div class="flex-item">2</div>
+                <div class="flex-item">3</div>
+            </div>
+
+            <h3>align-items: stretch (default)</h3>
+            <div class="flex-container tall align-stretch">
+                <div class="flex-item no-height">1</div>
+                <div class="flex-item no-height">2</div>
+                <div class="flex-item no-height">3</div>
+            </div>
+        </section>
+
+        <!-- GAP -->
+        <section class="demo-section">
+            <h2>Gap (Spacing Between Items)</h2>
+            <p>Modern way to add space between flex items.</p>
+
+            <h3>No Gap</h3>
+            <div class="flex-container">
+                <div class="flex-item">1</div>
+                <div class="flex-item">2</div>
+                <div class="flex-item">3</div>
+                <div class="flex-item">4</div>
+            </div>
+
+            <h3>gap: 10px</h3>
+            <div class="flex-container gap-small">
+                <div class="flex-item">1</div>
+                <div class="flex-item">2</div>
+                <div class="flex-item">3</div>
+                <div class="flex-item">4</div>
+            </div>
+
+            <h3>gap: 30px</h3>
+            <div class="flex-container gap-large">
+                <div class="flex-item">1</div>
+                <div class="flex-item">2</div>
+                <div class="flex-item">3</div>
+                <div class="flex-item">4</div>
+            </div>
+
+            <code class="code-block">
+.container {
+    display: flex;
+    gap: 20px;  /* Space between items */
+}
+            </code>
+        </section>
+
+        <!-- FLEX WRAP -->
+        <section class="demo-section">
+            <h2>Flex Wrap</h2>
+            <p>Controls whether items wrap to new lines.</p>
+
+            <h3>flex-wrap: nowrap (default)</h3>
+            <div class="flex-container flex-nowrap">
+                <div class="flex-item wide">1</div>
+                <div class="flex-item wide">2</div>
+                <div class="flex-item wide">3</div>
+                <div class="flex-item wide">4</div>
+                <div class="flex-item wide">5</div>
+            </div>
+
+            <h3>flex-wrap: wrap</h3>
+            <div class="flex-container flex-wrap">
+                <div class="flex-item wide">1</div>
+                <div class="flex-item wide">2</div>
+                <div class="flex-item wide">3</div>
+                <div class="flex-item wide">4</div>
+                <div class="flex-item wide">5</div>
+            </div>
+
+            <code class="code-block">
+.container {
+    display: flex;
+    flex-wrap: wrap;  /* nowrap | wrap | wrap-reverse */
+}
+            </code>
+        </section>
+
+        <!-- PRACTICAL EXAMPLES -->
+        <section class="demo-section">
+            <h2>Practical Audio Interface Layouts</h2>
+
+            <h3>1. Control Panel (Centered Horizontally)</h3>
+            <div class="control-panel">
+                <button class="control-btn">Play</button>
+                <button class="control-btn">Stop</button>
+                <button class="control-btn">Record</button>
+            </div>
+            <code class="code-block">
+.control-panel {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+            </code>
+
+            <h3>2. Knob Grid (Evenly Spaced)</h3>
+            <div class="knob-grid">
+                <div class="knob-item">
+                    <div class="knob"></div>
+                    <label>Frequency</label>
+                </div>
+                <div class="knob-item">
+                    <div class="knob"></div>
+                    <label>Cutoff</label>
+                </div>
+                <div class="knob-item">
+                    <div class="knob"></div>
+                    <label>Resonance</label>
+                </div>
+                <div class="knob-item">
+                    <div class="knob"></div>
+                    <label>Volume</label>
+                </div>
+            </div>
+            <code class="code-block">
+.knob-grid {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+            </code>
+
+            <h3>3. Slider Row (Space Between Label and Value)</h3>
+            <div class="slider-row">
+                <label>Frequency</label>
+                <input type="range" min="20" max="2000" value="440">
+                <span class="value">440 Hz</span>
+            </div>
+            <code class="code-block">
+.slider-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.slider-row input {
+    flex: 1;  /* Takes remaining space */
+}
+            </code>
+
+            <h3>4. Vertical Stack (ADSR Envelope Controls)</h3>
+            <div class="vertical-stack">
+                <div class="envelope-control">
+                    <label>Attack</label>
+                    <input type="range" min="0" max="2" step="0.01" value="0.1">
+                </div>
+                <div class="envelope-control">
+                    <label>Decay</label>
+                    <input type="range" min="0" max="2" step="0.01" value="0.3">
+                </div>
+                <div class="envelope-control">
+                    <label>Sustain</label>
+                    <input type="range" min="0" max="1" step="0.01" value="0.7">
+                </div>
+                <div class="envelope-control">
+                    <label>Release</label>
+                    <input type="range" min="0" max="2" step="0.01" value="0.5">
+                </div>
+            </div>
+            <code class="code-block">
+.vertical-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+            </code>
+
+            <h3>5. Responsive Grid (Wrapping Buttons)</h3>
+            <div class="button-grid">
+                <button class="grid-btn">C</button>
+                <button class="grid-btn">D</button>
+                <button class="grid-btn">E</button>
+                <button class="grid-btn">F</button>
+                <button class="grid-btn">G</button>
+                <button class="grid-btn">A</button>
+                <button class="grid-btn">B</button>
+                <button class="grid-btn">C</button>
+            </div>
+            <code class="code-block">
+.button-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+            </code>
+
+            <h3>6. Complete Synthesizer Layout</h3>
+            <div class="synthesizer">
+                <div class="synth-header">
+                    <h4>Virtual Synthesizer</h4>
+                </div>
+                
+                <div class="synth-controls">
+                    <div class="control-section">
+                        <h5>Oscillator</h5>
+                        <div class="knob-row">
+                            <div class="mini-knob">
+                                <div class="knob small"></div>
+                                <label>Freq</label>
+                            </div>
+                            <div class="mini-knob">
+                                <div class="knob small"></div>
+                                <label>Detune</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="control-section">
+                        <h5>Filter</h5>
+                        <div class="knob-row">
+                            <div class="mini-knob">
+                                <div class="knob small"></div>
+                                <label>Cutoff</label>
+                            </div>
+                            <div class="mini-knob">
+                                <div class="knob small"></div>
+                                <label>Res</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="control-section">
+                        <h5>Effects</h5>
+                        <div class="knob-row">
+                            <div class="mini-knob">
+                                <div class="knob small"></div>
+                                <label>Delay</label>
+                            </div>
+                            <div class="mini-knob">
+                                <div class="knob small"></div>
+                                <label>Reverb</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="synth-footer">
+                    <button class="synth-action-btn">▶ Play</button>
+                    <button class="synth-action-btn">■ Stop</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- CENTERING TECHNIQUES -->
+        <section class="demo-section">
+            <h2>Perfect Centering</h2>
+            <p>The most common layout task in UI design.</p>
+
+            <div class="centering-demo">
+                <div class="centered-content">
+                    <h3>Perfectly Centered!</h3>
+                    <p>Both horizontally and vertically</p>
+                </div>
+            </div>
+
+            <code class="code-block">
+.container {
+    display: flex;
+    justify-content: center;  /* Horizontal */
+    align-items: center;      /* Vertical */
+    height: 200px;
+}
+            </code>
+        </section>
+    </main>
+
+    <footer>
+        <h2>Flexbox Cheat Sheet</h2>
+        <div class="cheat-sheet">
+            <div class="cheat-column">
+                <h3>Container Properties</h3>
+                <ul>
+                    <li><code>display: flex;</code></li>
+                    <li><code>flex-direction: row | column;</code></li>
+                    <li><code>justify-content: flex-start | center | space-between;</code></li>
+                    <li><code>align-items: flex-start | center | stretch;</code></li>
+                    <li><code>gap: 20px;</code></li>
+                    <li><code>flex-wrap: wrap | nowrap;</code></li>
+                </ul>
+            </div>
+            <div class="cheat-column">
+                <h3>Item Properties</h3>
+                <ul>
+                    <li><code>flex: 1;</code> (grow to fill space)</li>
+                    <li><code>flex-shrink: 0;</code> (don't shrink)</li>
+                    <li><code>flex-basis: 200px;</code> (base size)</li>
+                    <li><code>align-self: center;</code> (override container)</li>
+                    <li><code>order: 1;</code> (change visual order)</li>
+                </ul>
+            </div>
+        </div>
+        <p style="margin-top: 20px;"><strong>Next:</strong> <a href="../04-custom-controls/index.html">Custom Audio Controls</a></p>
+    </footer>
+</body>
+</html>

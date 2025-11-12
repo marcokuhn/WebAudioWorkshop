@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World - HTML5 Audio - Web Audio Workshop</title>
+    <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎵 Hello World - HTML5 Audio</h1>
+            <p class="description">
+                Before diving into the Web Audio API, let's see what basic HTML5 audio can do.
+                This is the simplest way to play audio in a browser.
+            </p>
+        </header>
+        
+        <main class="controls">
+            <div class="control-group">
+                <h3>Basic Audio Player</h3>
+                
+                <!-- HTML5 Audio Element -->
+                <audio id="audioPlayer" controls style="width: 100%; margin: 20px 0;">
+                    <source src="../resources/audio-samples/drum-loop-120.wav" type="audio/wav">
+                    <source src="../resources/audio-samples/drum-loop-120.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                
+                <p style="text-align: center; color: #666; font-style: italic;">
+                    ☝️ This is the standard HTML5 audio player with built-in controls
+                </p>
+            </div>
+
+            <div class="control-group">
+                <h3>Custom Controls</h3>
+                
+                <div class="control-row">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="playBtn">▶️ Play</button>
+                        <button class="btn btn-secondary" id="pauseBtn">⏸️ Pause</button>
+                        <button class="btn btn-secondary" id="stopBtn">⏹️ Stop</button>
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Volume</span>
+                    <div class="control-input">
+                        <input type="range" id="volumeSlider" min="0" max="100" value="80">
+                    </div>
+                    <span class="value-display" id="volumeValue">80%</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Playback Speed</span>
+                    <div class="control-input">
+                        <input type="range" id="speedSlider" min="0.5" max="2" step="0.1" value="1">
+                    </div>
+                    <span class="value-display" id="speedValue">1.0x</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Current Time</span>
+                    <span class="value-display" id="timeDisplay">0:00 / 0:00</span>
+                </div>
+            </div>
+
+            <div class="status status-info">
+                <strong>Note:</strong> If you don't hear anything, make sure you have a sample file at 
+                <code>../resources/audio-samples/drum-loop-120.wav</code>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="info-box">
+                <h3>What's happening?</h3>
+                <p>
+                    HTML5 provides a simple <code>&lt;audio&gt;</code> element that can play audio files.
+                    It's great for basic playback, but has limitations:
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li>Can't manipulate the audio signal (no filters, effects, etc.)</li>
+                    <li>Limited control over timing and synchronization</li>
+                    <li>Can't connect multiple audio sources together</li>
+                    <li>No real-time audio synthesis</li>
+                    <li>No access to audio data for visualization or analysis</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    <strong>This is why we need the Web Audio API!</strong> It gives us the power to 
+                    generate, process, and analyze audio in real-time.
+                </p>
+            </div>
+
+            <div class="code-hint">
+                <h3>Key Concepts:</h3>
+                <ul>
+                    <li><code>&lt;audio&gt;</code> element provides basic audio playback</li>
+                    <li>JavaScript can control playback with <code>.play()</code>, <code>.pause()</code></li>
+                    <li>Properties like <code>.volume</code> and <code>.playbackRate</code> offer some control</li>
+                    <li>Good for simple use cases, but limited for audio applications</li>
+                </ul>
+            </div>
+
+            <div class="signal-flow">
+                <div class="signal-node">Audio File</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">HTML5 Audio Element</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Speakers</div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // ============================================
+        // HTML5 Audio Example - Basic Playback
+        // ============================================
+
+        // Get reference to the audio element
+        const audio = document.getElementById('audioPlayer');
+        
+        // Get control elements
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeValue = document.getElementById('volumeValue');
+        const speedSlider = document.getElementById('speedSlider');
+        const speedValue = document.getElementById('speedValue');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        // ============================================
+        // Event Listeners for Custom Controls
+        // ============================================
+
+        // Play button
+        playBtn.addEventListener('click', () => {
+            audio.play();
+        });
+
+        // Pause button
+        pauseBtn.addEventListener('click', () => {
+            audio.pause();
+        });
+
+        // Stop button (pause and reset to beginning)
+        stopBtn.addEventListener('click', () => {
+            audio.pause();
+            audio.currentTime = 0;
+        });
+
+        // Volume control
+        volumeSlider.addEventListener('input', (e) => {
+            const volume = e.target.value / 100; // Convert 0-100 to 0-1
+            audio.volume = volume;
+            volumeValue.textContent = e.target.value + '%';
+        });
+
+        // Set initial volume
+        audio.volume = 0.8;
+
+        // Playback speed control
+        speedSlider.addEventListener('input', (e) => {
+            audio.playbackRate = e.target.value;
+            speedValue.textContent = e.target.value + 'x';
+        });
+
+        // ============================================
+        // Time Display Update
+        // ============================================
+
+        // Format seconds to MM:SS
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Update time display while playing
+        audio.addEventListener('timeupdate', () => {
+            const current = formatTime(audio.currentTime);
+            const duration = formatTime(audio.duration || 0);
+            timeDisplay.textContent = `${current} / ${duration}`;
+        });
+
+        // ============================================
+        // Visual Feedback for Play State
+        // ============================================
+
+        audio.addEventListener('play', () => {
+            playBtn.style.opacity = '0.5';
+            pauseBtn.style.opacity = '1';
+        });
+
+        audio.addEventListener('pause', () => {
+            playBtn.style.opacity = '1';
+            pauseBtn.style.opacity = '0.5';
+        });
+
+        // ============================================
+        // Error Handling
+        // ============================================
+
+        audio.addEventListener('error', (e) => {
+            console.error('Audio loading error:', e);
+            alert('Could not load audio file. Please make sure the sample exists in the resources folder.');
+        });
+
+        // Log when audio is ready
+        audio.addEventListener('loadeddata', () => {
+            console.log('✅ Audio loaded successfully!');
+            console.log('Duration:', formatTime(audio.duration));
+        });
+    </script>
+</body>
+</html>

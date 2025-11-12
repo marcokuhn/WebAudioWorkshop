@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Visualization with p5.js - Web Audio Workshop</title>
+    <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+    <style>
+        #visualizationCanvas {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        #visualizationCanvas canvas {
+            display: block;
+            width: 100% !important;
+            height: auto !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Audio Analysis + p5.js Visualization</h1>
+            <p class="description">
+                See your sound! Analyze audio samples in real-time and visualize waveforms, frequency spectrums,
+                and amplitude using p5.js graphics.
+            </p>
+        </header>
+        
+        <main class="controls">
+            <!-- Start Audio Context Button -->
+            <div class="control-group">
+                <h3>Audio Engine</h3>
+                <button class="btn btn-success" id="startAudioBtn">🎵 Start Audio Engine</button>
+                <div class="status status-warning" id="statusMessage">
+                    Click "Start Audio Engine" to enable sound
+                </div>
+            </div>
+
+            <!-- Load Sample -->
+            <div class="control-group" id="controlsSection" style="display: none;">
+                <h3>Load Audio Sample</h3>
+                
+                <div class="control-row">
+                    <button class="btn btn-primary" id="loadSampleBtn">📁 Load Example Sample</button>
+                </div>
+
+                <div style="margin: 20px 0; text-align: center;">
+                    <strong>- OR -</strong>
+                </div>
+
+                <div class="control-row">
+                    <input type="file" id="fileInput" accept="audio/*">
+                </div>
+
+                <div id="sampleInfo" class="status status-info">
+                    No sample loaded yet
+                </div>
+            </div>
+
+            <!-- Visualization Canvas -->
+            <div class="visualization">
+                <div id="visualizationCanvas"></div>
+            </div>
+
+            <!-- Playback Controls -->
+            <div class="control-group" id="playbackSection" style="display: none;">
+                <h3>Playback Controls</h3>
+                
+                <div class="control-row">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="playBtn" disabled>▶️ Play</button>
+                        <button class="btn btn-danger" id="stopBtn" disabled>⏹️ Stop</button>
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Loop</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="loopToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Volume</span>
+                    <div class="control-input">
+                        <input type="range" id="volumeSlider" min="0" max="100" value="50" step="1">
+                    </div>
+                    <span class="value-display" id="volumeValue">50%</span>
+                </div>
+            </div>
+
+            <!-- Visualization Controls -->
+            <div class="control-group" id="vizSection" style="display: none;">
+                <h3>Visualization Mode</h3>
+                
+                <div class="control-row">
+                    <span class="control-label">Display Mode</span>
+                    <div class="control-input">
+                        <select id="vizModeSelect">
+                            <option value="waveform">Waveform (Time Domain)</option>
+                            <option value="spectrum">Frequency Spectrum (FFT)</option>
+                            <option value="amplitude">Amplitude Meter</option>
+                            <option value="combined">Combined View</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="status status-info">
+                    <strong>Visualization Modes:</strong><br>
+                    <strong>Waveform:</strong> Shows the shape of the audio signal over time<br>
+                    <strong>Spectrum:</strong> Shows which frequencies are present (bass, mids, highs)<br>
+                    <strong>Amplitude:</strong> Shows overall volume level as a pulsing circle<br>
+                    <strong>Combined:</strong> Shows waveform and spectrum together
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="info-box">
+                <h3>What's happening?</h3>
+                <p>
+                    We're using <strong>audio analyzers</strong> to extract information from the audio signal,
+                    then using <strong>p5.js</strong> to draw real-time visualizations.
+                </p>
+                <p style="margin-top: 15px;">
+                    <strong>Analysis Types:</strong>
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li><strong>Waveform (Time Domain):</strong> Shows the actual shape of the sound wave over time</li>
+                    <li><strong>FFT (Frequency Domain):</strong> Breaks down the audio into individual frequencies (spectrum analyzer)</li>
+                    <li><strong>Meter (Amplitude):</strong> Measures the overall volume/loudness</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    <strong>How It Works:</strong>
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li>Audio signal is split and sent to multiple analyzers</li>
+                    <li>Each analyzer processes the signal differently</li>
+                    <li>p5.js draw() function runs 60 times per second</li>
+                    <li>Each frame, we read the analyzer data and draw graphics</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    <strong>Use Cases:</strong> Music visualizers, VJ software, audio debugging, interactive installations,
+                    rhythm games, and any application that needs to react to sound.
+                </p>
+            </div>
+
+            <div class="code-hint">
+                <h3>Key Concepts:</h3>
+                <ul>
+                    <li><code>Tone.Waveform</code> captures the time-domain signal (waveform shape)</li>
+                    <li><code>Tone.FFT</code> performs Fast Fourier Transform (frequency analysis)</li>
+                    <li><code>Tone.Meter</code> measures amplitude/volume in decibels</li>
+                    <li><code>.getValue()</code> gets current analyzer data</li>
+                    <li>p5.js <code>draw()</code> creates animation loop for visualization</li>
+                    <li>Audio is split to multiple analyzers using <code>.connect()</code></li>
+                </ul>
+            </div>
+
+            <div class="signal-flow">
+                <div class="signal-node">Sample Player</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Splitter</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Waveform Analyzer</div>
+                <div class="signal-arrow" style="writing-mode: vertical-lr;">↓</div>
+                <div class="signal-node">FFT Analyzer</div>
+                <div class="signal-arrow" style="writing-mode: vertical-lr;">↓</div>
+                <div class="signal-node">Meter</div>
+                <div class="signal-arrow" style="writing-mode: vertical-lr;">↓</div>
+                <div class="signal-node">Destination</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- p5.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/p5@latest/lib/p5.min.js"></script>
+    
+    <!-- Tone.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
+    
+    <!-- Our JavaScript -->
+    <script src="script.js"></script>
+    
+    <script>
+        // Show sections after audio starts
+        document.getElementById('startAudioBtn').addEventListener('click', () => {
+            setTimeout(() => {
+                document.getElementById('playbackSection').style.display = 'block';
+                document.getElementById('vizSection').style.display = 'block';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

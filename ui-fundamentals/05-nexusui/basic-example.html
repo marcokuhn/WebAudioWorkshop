@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusUI Basics - UI Fundamentals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .control-item {
+            text-align: center;
+        }
+
+        .control-item h3 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .value-display {
+            margin-top: 10px;
+            padding: 8px;
+            background: white;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #667eea;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #2196f3;
+        }
+
+        .info-box h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+            color: #666;
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎛️ NexusUI Basics</h1>
+        <p class="subtitle">Touch-optimized UI components for web audio applications</p>
+
+        <div class="info-box">
+            <h3>What is NexusUI?</h3>
+            <p>
+                NexusUI is a JavaScript library providing touch-optimized UI components specifically 
+                designed for web audio applications. It includes dials, sliders, buttons, keyboards, 
+                and more - all optimized for both desktop and mobile devices.
+            </p>
+            <p style="margin-top: 10px;">
+                <strong>Key Features:</strong> Touch & mouse support, customizable appearance, 
+                easy event handling, and seamless integration with Tone.js and Web Audio API.
+            </p>
+        </div>
+
+        <!-- BASIC CONTROLS -->
+        <div class="section">
+            <h2>Basic Controls</h2>
+            <p>The most commonly used NexusUI components for audio applications.</p>
+
+            <div class="control-grid">
+                <div class="control-item">
+                    <h3>Dial</h3>
+                    <div id="dial1"></div>
+                    <div class="value-display" id="dialValue">0.50</div>
+                </div>
+
+                <div class="control-item">
+                    <h3>Slider</h3>
+                    <div id="slider1"></div>
+                    <div class="value-display" id="sliderValue">440 Hz</div>
+                </div>
+
+                <div class="control-item">
+                    <h3>Button</h3>
+                    <div id="button1"></div>
+                    <div class="value-display" id="buttonValue">Off</div>
+                </div>
+
+                <div class="control-item">
+                    <h3>Toggle</h3>
+                    <div id="toggle1"></div>
+                    <div class="value-display" id="toggleValue">False</div>
+                </div>
+            </div>
+
+            <div class="code-block">// Creating a Dial
+var dial = new Nexus.Dial('#dial1', {
+    size: [75, 75],
+    min: 0,
+    max: 1,
+    value: 0.5
+});
+
+// Listen for changes
+dial.on('change', function(value) {
+    console.log('Dial:', value);
+});
+
+// Creating a Slider
+var slider = new Nexus.Slider('#slider1', {
+    size: [200, 40],
+    min: 20,
+    max: 2000,
+    value: 440
+});
+
+slider.on('change', function(value) {
+    console.log('Frequency:', value);
+});</div>
+        </div>
+
+        <!-- NUMBER & MULTISLIDER -->
+        <div class="section">
+            <h2>Advanced Controls</h2>
+
+            <div class="control-grid">
+                <div class="control-item">
+                    <h3>Number Box</h3>
+                    <div id="number1"></div>
+                    <div class="value-display" id="numberValue">120 BPM</div>
+                </div>
+
+                <div class="control-item">
+                    <h3>Position (X/Y Pad)</h3>
+                    <div id="position1"></div>
+                    <div class="value-display" id="positionValue">X: 0.5, Y: 0.5</div>
+                </div>
+
+                <div class="control-item">
+                    <h3>Multislider</h3>
+                    <div id="multislider1"></div>
+                    <div class="value-display" id="multisliderValue">Mix Levels</div>
+                </div>
+
+                <div class="control-item">
+                    <h3>Select</h3>
+                    <div id="select1"></div>
+                    <div class="value-display" id="selectValue">Sine</div>
+                </div>
+            </div>
+
+            <div class="code-block">// Number Box for tempo/BPM
+var number = new Nexus.Number('#number1', {
+    size: [100, 40],
+    min: 60,
+    max: 200,
+    value: 120
+});
+
+// Position (X/Y Pad) for effects
+var position = new Nexus.Position('#position1', {
+    size: [200, 200],
+    x: 0.5,
+    y: 0.5
+});
+
+position.on('change', function(v) {
+    console.log('X:', v.x, 'Y:', v.y);
+});</div>
+        </div>
+
+        <!-- KEYBOARD -->
+        <div class="section">
+            <h2>Piano Keyboard</h2>
+            <div style="display: flex; justify-content: center; margin: 20px 0;">
+                <div id="keyboard1"></div>
+            </div>
+            <div class="value-display" id="keyboardValue">Play a note!</div>
+
+            <div class="code-block">// Piano Keyboard
+var keyboard = new Nexus.Piano('#keyboard1', {
+    size: [600, 120],
+    mode: 'button',  // 'button' or 'toggle'
+    lowNote: 48,     // C3
+    highNote: 72     // C5
+});
+
+keyboard.on('change', function(v) {
+    if (v.state) {
+        console.log('Note On:', v.note);
+    } else {
+        console.log('Note Off:', v.note);
+    }
+});</div>
+        </div>
+
+        <!-- SEQUENCER -->
+        <div class="section">
+            <h2>Sequencer Matrix</h2>
+            <div style="display: flex; justify-content: center; margin: 20px 0;">
+                <div id="sequencer1"></div>
+            </div>
+            <div class="value-display" id="sequencerValue">Click cells to create patterns</div>
+
+            <div class="code-block">// Step Sequencer
+var sequencer = new Nexus.Sequencer('#sequencer1', {
+    size: [400, 200],
+    mode: 'toggle',
+    rows: 4,      // Number of tracks/notes
+    columns: 8    // Number of steps
+});
+
+sequencer.on('change', function(v) {
+    console.log('Step:', v.column, 'Note:', v.row, 'State:', v.state);
+});</div>
+        </div>
+
+        <!-- CUSTOMIZATION -->
+        <div class="section">
+            <h2>Customizing Appearance</h2>
+            <p>NexusUI components can be styled with custom colors.</p>
+
+            <div class="control-grid">
+                <div class="control-item">
+                    <h3>Custom Colors</h3>
+                    <div id="dialCustom"></div>
+                </div>
+
+                <div class="control-item">
+                    <h3>Theme Example</h3>
+                    <div id="sliderCustom"></div>
+                </div>
+            </div>
+
+            <div class="code-block">// Custom colors
+var customDial = new Nexus.Dial('#dialCustom', {
+    size: [75, 75]
+});
+
+// Set custom colors
+customDial.colorize('accent', '#667eea');
+customDial.colorize('fill', '#764ba2');
+
+// You can also set colors globally
+Nexus.colors.accent = '#667eea';
+Nexus.colors.fill = '#764ba2';</div>
+        </div>
+
+        <!-- INTEGRATION WITH TONE.JS -->
+        <div class="section">
+            <h2>🎵 Integration with Tone.js</h2>
+            <p>See how to connect NexusUI controls to Tone.js audio parameters.</p>
+
+            <div class="info-box" style="background: #fff3e0; border-left-color: #ff9800;">
+                <h3 style="color: #f57c00;">Note:</h3>
+                <p>
+                    This is a basic NexusUI demonstration. For a complete audio integration example, 
+                    see <a href="synth-interface.html" style="color: #f57c00;">synth-interface.html</a>
+                </p>
+            </div>
+
+            <div class="code-block">// Complete Tone.js integration example
+
+// Create Tone.js synthesizer
+const synth = new Tone.Synth().toDestination();
+
+// Frequency Dial
+var freqDial = new Nexus.Dial('#freqDial');
+freqDial.on('change', function(value) {
+    var frequency = value * 1000 + 20; // 20-1020 Hz
+    synth.frequency.rampTo(frequency, 0.1);
+});
+
+// Volume Slider
+var volumeSlider = new Nexus.Slider('#volumeSlider');
+volumeSlider.on('change', function(value) {
+    synth.volume.rampTo(Tone.gainToDb(value), 0.1);
+});
+
+// Play Button
+var playBtn = new Nexus.Button('#playBtn');
+playBtn.on('change', function(state) {
+    if (state) {
+        synth.triggerAttack('C4');
+    } else {
+        synth.triggerRelease();
+    }
+});
+
+// Piano Keyboard
+var piano = new Nexus.Piano('#piano');
+piano.on('change', function(v) {
+    if (v.state) {
+        synth.triggerAttack(Tone.Frequency(v.note, 'midi'));
+    } else {
+        synth.triggerRelease();
+    }
+});</div>
+        </div>
+
+        <footer>
+            <p><strong>Resources:</strong></p>
+            <p>
+                <a href="https://nexus-js.github.io/ui/" target="_blank">NexusUI Documentation</a> | 
+                <a href="synth-interface.html">Complete Synth Example</a> | 
+                <a href="../README.md">Back to UI Fundamentals</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- NexusUI Library -->
+    <script src="https://cdn.jsdelivr.net/npm/nexusui@latest/dist/NexusUI.js"></script>
+
+    <!-- Our JavaScript -->
+    <script>
+        // Dial
+        var dial = new Nexus.Dial('#dial1', {
+            size: [75, 75],
+            min: 0,
+            max: 1,
+            value: 0.5
+        });
+        
+        dial.on('change', function(value) {
+            document.getElementById('dialValue').textContent = value.toFixed(2);
+        });
+
+        // Slider
+        var slider = new Nexus.Slider('#slider1', {
+            size: [200, 40],
+            min: 20,
+            max: 2000,
+            value: 440,
+            step: 1
+        });
+        
+        slider.on('change', function(value) {
+            document.getElementById('sliderValue').textContent = Math.round(value) + ' Hz';
+        });
+
+        // Button
+        var button = new Nexus.Button('#button1', {
+            size: [100, 50],
+            mode: 'toggle'
+        });
+        
+        button.on('change', function(state) {
+            document.getElementById('buttonValue').textContent = state ? 'On' : 'Off';
+        });
+
+        // Toggle
+        var toggle = new Nexus.Toggle('#toggle1', {
+            size: [40, 20],
+            state: false
+        });
+        
+        toggle.on('change', function(state) {
+            document.getElementById('toggleValue').textContent = state.toString();
+        });
+
+        // Number
+        var number = new Nexus.Number('#number1', {
+            size: [100, 40],
+            min: 60,
+            max: 200,
+            value: 120,
+            step: 1
+        });
+        
+        number.on('change', function(value) {
+            document.getElementById('numberValue').textContent = value + ' BPM';
+        });
+
+        // Position
+        var position = new Nexus.Position('#position1', {
+            size: [200, 200],
+            x: 0.5,
+            y: 0.5
+        });
+        
+        position.on('change', function(v) {
+            document.getElementById('positionValue').textContent = 
+                'X: ' + v.x.toFixed(2) + ', Y: ' + v.y.toFixed(2);
+        });
+
+        // Multislider
+        var multislider = new Nexus.Multislider('#multislider1', {
+            size: [200, 100],
+            numberOfSliders: 4,
+            min: 0,
+            max: 1,
+            step: 0.01,
+            values: [0.5, 0.7, 0.3, 0.9]
+        });
+        
+        multislider.on('change', function(v) {
+            document.getElementById('multisliderValue').textContent = 
+                'Values: ' + v.map(n => n.toFixed(2)).join(', ');
+        });
+
+        // Select
+        var select = new Nexus.Select('#select1', {
+            size: [150, 40],
+            options: ['Sine', 'Square', 'Triangle', 'Sawtooth']
+        });
+        
+        select.on('change', function(v) {
+            document.getElementById('selectValue').textContent = v.value;
+        });
+
+        // Keyboard
+        var keyboard = new Nexus.Piano('#keyboard1', {
+            size: [600, 120],
+            mode: 'button',
+            lowNote: 48,
+            highNote: 72
+        });
+        
+        keyboard.on('change', function(v) {
+            if (v.state) {
+                document.getElementById('keyboardValue').textContent = 
+                    'Note On: ' + v.note + ' (MIDI ' + v.note + ')';
+            } else {
+                document.getElementById('keyboardValue').textContent = 
+                    'Note Off: ' + v.note;
+            }
+        });
+
+        // Sequencer
+        var sequencer = new Nexus.Sequencer('#sequencer1', {
+            size: [400, 200],
+            mode: 'toggle',
+            rows: 4,
+            columns: 8
+        });
+        
+        sequencer.on('change', function(v) {
+            document.getElementById('sequencerValue').textContent = 
+                'Step: ' + v.column + ', Track: ' + v.row + ', State: ' + v.state;
+        });
+
+        // Custom styled components
+        var dialCustom = new Nexus.Dial('#dialCustom', {
+            size: [75, 75]
+        });
+        dialCustom.colorize('accent', '#667eea');
+        dialCustom.colorize('fill', '#764ba2');
+
+        var sliderCustom = new Nexus.Slider('#sliderCustom', {
+            size: [200, 40]
+        });
+        sliderCustom.colorize('accent', '#667eea');
+        sliderCustom.colorize('fill', '#764ba2');
+
+        console.log('NexusUI components initialized!');
+        console.log('Try interacting with the controls above.');
+    </script>
+</body>
+</html>

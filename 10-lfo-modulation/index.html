@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LFO Modulation - Web Audio Workshop</title>
+    <link rel="stylesheet" href="../resources/css/workshop-styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌊 LFO Modulation</h1>
+            <p class="description">
+                Explore modulation! An LFO (Low Frequency Oscillator) can automatically control other parameters,
+                creating movement, vibrato, tremolo, and dynamic filter sweeps.
+            </p>
+        </header>
+        
+        <main class="controls">
+            <!-- Start Audio Context Button -->
+            <div class="control-group">
+                <h3>Audio Engine</h3>
+                <button class="btn btn-success" id="startAudioBtn">🎵 Start Audio Engine</button>
+                <div class="status status-warning" id="statusMessage">
+                    Click "Start Audio Engine" to enable sound
+                </div>
+            </div>
+
+            <!-- Playback Controls -->
+            <div class="control-group" id="controlsSection" style="display: none;">
+                <h3>Playback</h3>
+                
+                <div class="control-row">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="playBtn">▶️ Play Sound</button>
+                        <button class="btn btn-danger" id="stopBtn" disabled>⏹️ Stop</button>
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Carrier Frequency</span>
+                    <div class="control-input">
+                        <input type="range" id="carrierFreqSlider" min="100" max="1000" value="220" step="1">
+                    </div>
+                    <span class="value-display" id="carrierFreqValue">220 Hz</span>
+                </div>
+            </div>
+
+            <!-- LFO Controls -->
+            <div class="control-group" id="lfoSection" style="display: none;">
+                <h3>LFO (Low Frequency Oscillator)</h3>
+                
+                <div class="control-row">
+                    <span class="control-label">Modulation Target</span>
+                    <div class="control-input">
+                        <select id="modulationTargetSelect">
+                            <option value="filter">Filter Cutoff (Wah effect)</option>
+                            <option value="pitch">Pitch (Vibrato)</option>
+                            <option value="volume">Volume (Tremolo)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">LFO Rate (Speed)</span>
+                    <div class="control-input">
+                        <input type="range" id="lfoRateSlider" min="0.1" max="20" value="2" step="0.1">
+                    </div>
+                    <span class="value-display" id="lfoRateValue">2.00 Hz</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">LFO Depth (Amount)</span>
+                    <div class="control-input">
+                        <input type="range" id="lfoDepthSlider" min="0" max="1" value="0.5" step="0.05">
+                    </div>
+                    <span class="value-display" id="lfoDepthValue">0.50</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">LFO Waveform</span>
+                    <div class="control-input">
+                        <select id="lfoWaveformSelect">
+                            <option value="sine">Sine (Smooth)</option>
+                            <option value="triangle">Triangle (Linear)</option>
+                            <option value="square">Square (On/Off)</option>
+                            <option value="sawtooth">Sawtooth (Ramp)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="status status-info">
+                    <strong>Try this:</strong> Set LFO to modulate filter, use a slow rate (1-2 Hz) with high depth
+                    for a sweeping wah effect. Switch to square wave for a rhythmic on/off effect!
+                </div>
+            </div>
+
+            <!-- Filter Center Control -->
+            <div class="control-group" id="filterSection" style="display: none;">
+                <h3>Filter Settings</h3>
+                
+                <div class="control-row">
+                    <span class="control-label">Filter Center Frequency</span>
+                    <div class="control-input">
+                        <input type="range" id="filterCutoffSlider" min="200" max="5000" value="1000" step="10">
+                    </div>
+                    <span class="value-display" id="filterCutoffValue">1000 Hz</span>
+                </div>
+
+                <div class="status status-info">
+                    The LFO will modulate around this center frequency. Higher depth = wider modulation range.
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="info-box">
+                <h3>What's happening?</h3>
+                <p>
+                    An <strong>LFO (Low Frequency Oscillator)</strong> is an oscillator that runs at a low frequency
+                    (usually below 20 Hz, below the range of human hearing). Instead of creating sound, it's used to
+                    <strong>modulate (control)</strong> other audio parameters automatically.
+                </p>
+                <p style="margin-top: 15px;">
+                    <strong>Common LFO Applications:</strong>
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li><strong>Filter Modulation:</strong> Creates sweeping filter effects (wah, auto-filter)</li>
+                    <li><strong>Pitch Modulation (Vibrato):</strong> Adds natural-sounding pitch variation</li>
+                    <li><strong>Volume Modulation (Tremolo):</strong> Creates rhythmic volume changes</li>
+                    <li><strong>Panning Modulation:</strong> Moves sound left and right automatically</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    <strong>LFO Parameters:</strong>
+                </p>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                    <li><strong>Rate:</strong> How fast the LFO oscillates (in Hz)</li>
+                    <li><strong>Depth:</strong> How much the parameter changes (modulation amount)</li>
+                    <li><strong>Waveform:</strong> The shape of the modulation (sine, triangle, square, etc.)</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    LFOs are essential in synthesizers, creating movement and life in otherwise static sounds.
+                    Most classic synth sounds use LFO modulation!
+                </p>
+            </div>
+
+            <div class="code-hint">
+                <h3>Key Concepts:</h3>
+                <ul>
+                    <li><code>Tone.LFO</code> creates a low-frequency oscillator for modulation</li>
+                    <li><code>.frequency</code> controls LFO rate (speed)</li>
+                    <li><code>.min</code> and <code>.max</code> set the modulation range</li>
+                    <li><code>.connect()</code> connects LFO to target parameter</li>
+                    <li><code>.type</code> changes LFO waveform shape</li>
+                    <li>LFOs don't make sound - they control other parameters</li>
+                </ul>
+            </div>
+
+            <div class="signal-flow">
+                <div class="signal-node">Carrier Oscillator</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Filter</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Gain</div>
+                <div class="signal-arrow">→</div>
+                <div class="signal-node">Destination</div>
+                <div class="signal-arrow" style="writing-mode: vertical-lr; margin-left: -80px;">↑</div>
+                <div class="signal-node" style="background: #28a745;">LFO (Modulator)</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Tone.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
+    
+    <!-- Our JavaScript -->
+    <script src="script.js"></script>
+    
+    <script>
+        // Show sections after audio starts
+        document.getElementById('startAudioBtn').addEventListener('click', () => {
+            setTimeout(() => {
+                document.getElementById('lfoSection').style.display = 'block';
+                document.getElementById('filterSection').style.display = 'block';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
