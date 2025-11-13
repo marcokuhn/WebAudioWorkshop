@@ -444,32 +444,6 @@ Transport (Clock) → Sequence → Synth → Destination
 ### Free Sample Libraries
 - See [resources/audio-samples/README.md](resources/audio-samples/README.md)
 
-## 💡 Tips for Workshop Instructors
-
-### Timing Suggestions:
-- **Introduction (15 min)**: Workshop overview, setup verification
-- **Part 1 (60 min)**: Examples 00-03 with live coding demonstrations
-- **Break (10 min)**
-- **Part 2 (45 min)**: Examples 04-05, encourage students to try MIDI
-- **Part 3 (60 min)**: Examples 06-08, emphasize signal flow
-- **Break (10 min)**
-- **Part 4 (75 min)**: Examples 09-11, students work at own pace
-- **Q&A (30 min)**: Troubleshooting, experimentation, questions
-
-### Teaching Strategies:
-1. **Live Code**: Demonstrate each example by building it from scratch
-2. **Incremental**: Show how each example builds on previous ones
-3. **Hands-On**: Give students time to modify parameters
-4. **Encourage Exploration**: Have students break things and fix them
-5. **Signal Flow**: Draw diagrams showing how audio flows through nodes
-6. **Real-World Context**: Connect concepts to familiar instruments/effects
-
-### Common Student Questions:
-- "Why do I need to click a button to start audio?" → Browser autoplay policy
-- "What's the difference between Tone.js and Web Audio API?" → Abstraction level
-- "Can I use this in production?" → Yes, with considerations for browser compatibility
-- "How do I deploy this?" → Any web hosting, just upload the files
-
 ## 🎨 Customization Ideas
 
 Students can extend these examples by:
