@@ -202,10 +202,6 @@ function Synthesizer() {
 }
 ```
 
-**Useful React Audio Libraries:**
-- [react-web-audio](https://github.com/nick-thompson/react-web-audio)
-- [react-music](https://github.com/FormidableLabs/react-music)
-
 **Resources:**
 - [React Documentation](https://react.dev/)
 - [Tone.js with React Tutorial](https://www.youtube.com/results?search_query=react+tonejs)
