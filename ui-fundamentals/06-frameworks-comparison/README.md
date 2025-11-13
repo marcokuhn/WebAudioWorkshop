@@ -449,11 +449,6 @@ controller.addEventListener('frequencyChange', (e) => {
 
 ## 🌐 Additional Resources
 
-### Communities
-- [Web Audio Slack](https://web-audio-slackin.herokuapp.com/)
-- [Tone.js Forum](https://github.com/Tonejs/Tone.js/discussions)
-- [r/WebAudioAPI](https://reddit.com/r/WebAudioAPI)
-
 ### Tutorials
 - [MDN Web Audio Guide](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
 - [Web Audio School](https://mmckegg.github.io/web-audio-school/)
