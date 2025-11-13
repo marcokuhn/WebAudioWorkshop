@@ -417,7 +417,6 @@ slider.on('change', function(value) {
 
 ### Inspiration
 - [CodePen - Audio Visualizers](https://codepen.io/tag/audio-visualizer)
-- [Dribbble - Music UI](https://dribbble.com/tags/music_ui)
 - [UI Movement - Audio Interfaces](https://uimovement.com/)
 
 ## 💻 Practice Exercises
