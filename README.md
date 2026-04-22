@@ -1,6 +1,6 @@
 # Web Audio API Workshop for Audio Design Students
 
-A comprehensive 4.5-hour workshop introducing beginners to web audio development using HTML, Tone.js, NexusUI, and p5.js.
+A comprehensive 5-hour workshop introducing beginners to web audio development using HTML, Tone.js, NexusUI, and p5.js.
 
 ## 🎯 Workshop Overview
 
